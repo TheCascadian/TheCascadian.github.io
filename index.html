@@ -1,542 +1,562 @@
+<!-- ===========================FILE 1: index.html=========================== -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNTITLED MUSIC COLLECTIVE</title>
-    <!-- Tailwind CSS -->
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Honk&family=Nosifer&family=Vampiro+One&family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
-    <!-- GSAP for Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-    <!-- Lightbox2 for Image Galleries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
-    <!-- Custom CSS -->
-    <style>
-        /* Custom Fonts */
-        body {
-            font-family: 'Oswald', sans-serif; /* Changed to Oswald for main body text */
-        }
-        .grunge-text {
-            font-family: 'Nosifer', cursive; /* Nosifer for HERO section title */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .body_text {
-            font-family: 'Bebas Neue', sans-serif; /* Bebas Neue for body text if needed */
-        }
-        
-        .section-title {
-            font-family: 'Vampiro One', cursive; /* Vampiro One for HERO section title */
-            font-size: 4rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        /* Hero Section Background */
-        .hero-section {
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-section video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 0;
-        }
-        /* Navigation Link Hover Effects */
-        .nav-link {
-            position: relative;
-            transition: color 0.3s;
-        }
-        .nav-link:hover {
-            color: #ff3333;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: #ff3333;
-            bottom: -5px;
-            left: 0;
-            transition: width 0.3s;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Member Card Shadows */
-        .member-card {
-            background: #1a1a1a;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
-        .member-card:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Music Item Shadows */
-        .music-item {
-            background: #1a1a1a;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
-        .music-item:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Footer Styles */
-        .site-footer {
-            background: #1a1a1a;
-            padding: 3rem 0 1rem;
-            border-top: 3px solid #333;
-            box-shadow: 0 -2px 15px rgba(0,0,0,0.5);
-        }
-        .footer-tagline {
-            color: #888;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-        .footer-social a:hover {
-            color: #ff3366;
-        }
-
-        /* Button Honk Font */
-        .button-honk {
-            font-family: 'Vampiro One', sans-serif; /* Honk font for the "Explore" button */
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .nav-links {
-                flex-direction: column;
-                gap: 1rem;
+    <head>
+        <!-- ===========================META SETUP=========================== -->
+        <meta charset="UTF-8">
+        <meta http-equiv="content-language" content="en">
+        <meta http-equiv="X-Content-Type-Options" content="nosniff">
+        <meta http-equiv="X-Frame-Options" content="DENY">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:;">
+        <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PUBLIK DISTURBVNCE</title>
+        <link rel="icon" type="image/x-icon" href="assets/icons/ms-icon-144x144.png">
+        <!-- ===========================SEO META TAGS=========================== -->
+        <meta name="description" content="Join the PUBLIK DISTURBVNCE where soundscapes and creativity converge. Explore unique music, 
+            visual art, and connect with diverse artists in the Pacific Northwest.">
+        <meta name="keywords" content="Music Collective, PNW Music, UMC, Underground Rap, Indie Hip-Hop, Hip Hop, 
+            Visual Art Collective, VAC, Underground Artists, New Music, Nu Music, Fresh Releases, 
+            Hyper Pop, Hyperpop, Alt Rock, Alternative Rock, Alt-Rock, Creative Community, 
+            Artist Collab, Artistz, Independent Musicians, Indie Musicians, Indy Music, 
+            Emerging Artists, Music Prod, Muzik Production, Artistic Expression, Art Expression">
+        <meta name="author" content="PUBLIK DISTURBVNCE">
+        <meta name="robots" content="index, follow">
+        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <meta name="language" content="English">
+        <meta name="revisit-after" content="7 days">
+        <meta name="rating" content="General">
+        <!-- ===========================OPEN GRAPH META TAGS=========================== -->
+        <meta property="og:title" content="PUBLIK DISTURBVNCE" />
+        <meta property="og:description" content="Join the PUBLIK DISTURBVNCE where soundscapes and creativity converge. Explore unique music, visual art, and connect with diverse artists." />
+        <meta property="og:url" content="https://thecascadian.github.io/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://thecascadian.github.io/assets/istockphoto-1147544807-612x612.jpg" />
+        <!-- ===========================
+            JSON-LD SCHEMA MARKUP
+            =========================== -->
+        <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "MusicGroup",
+              "name": "PUBLIK DISTURBVNCE",
+              "url": "https://thecascadian.github.io/",
+              "description": "Join the PUBLIK DISTURBVNCE where soundscapes and creativity converge. Explore unique music, visual art, and connect with diverse artists.",
+              "genre": ["Rap","Hip-Hop","Visual Art","Underground Artists","New Music","Hyperpop","Alternative Rock"],
+              "foundingLocation": "Pacific Northwest",
+              "foundingDate": "2020",
+              "member": [
+                {
+                  "@type": "Person",
+                  "name": "Prophet",
+                  "description": "Artist / Songwriter"
+                },
+                {
+                  "@type": "Person",
+                  "name": "DoubleDownDewey",
+                  "description": "Producer / Artist"
+                },
+                {
+                  "@type": "Person",
+                  "name": "Unsatisfied Genius",
+                  "description": "Artist / Songwriter"
+                }
+              ]
             }
-            .hero-section {
-                background-attachment: scroll;
-            }
-            .section-title {
-                font-size: 2rem;
-            }
-            .music-grid, .members-grid, .art-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 2rem;
-            }
-            .footer-social {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-gray-300">
-
-    <!-- NAVIGATION -->
-    <nav class="fixed w-full bg-black bg-opacity-80 z-50 px-6 py-4">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="text-2xl grunge-text text-white">
-                UNTITLED MUSIC COLLECTIVE
-            </div>
-            <div class="space-x-6">
-                <a href="#home" class="nav-link text-white">Home</a>
-                <a href="#about" class="nav-link text-white">About</a>
-                <a href="#music" class="nav-link text-white">Music</a>
-                <a href="#art" class="nav-link text-white">Art</a>
-                <a href="#contact" class="nav-link text-white">Contact</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section id="home" class="hero-section relative flex items-center justify-center text-center h-screen overflow-hidden">
-        <!-- Video Background -->
-        <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
-            <source src="assets/hero-background.mp4" type="video/mp4">
-        </video>
-        <!-- Fallback Image for when video cannot play -->
-        <img src="assets/grunge-texture.jpg" alt="Hero Background" class="absolute top-0 left-0 w-full h-full object-cover z-0 hidden video-fallback">
-        <!-- Overlay for better text visibility -->
-        <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10 hidden md:block"></div>
-        
-        <!-- HERO Content -->
-        <div class="relative z-20 max-w-4xl mx-auto px-4">
-            <h1 class="text-6xl md:text-8xl grunge-text mb-6 text-white">PLACEHOLD</h1>
-            <p class="text-xl md:text-2xl mb-12 opacity-90">WHERE SOUNDSCAPES MEET NEW EXPERIENCES</p>
-            <a href="#about" class="inline-block px-8 py-4 bg-red-800 hover:bg-red-700 transition-colors duration-300 text-white text-lg uppercase tracking-wider button-honk">Explore the Collective</a>
-        </div>
-    </section>
-
-    <!-- ABOUT SECTION -->
-    <section id="about" class="py-20 px-6 bg-zinc-900">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl section-title mb-16 text-center text-white">About Us</h2>
-            <div class="grid md:grid-cols-2 gap-12 mb-12">
-                <!-- Our Vision -->
-                <div class="about-row bg-zinc-800 p-6 rounded-lg">
-                    <h3 class="text-2xl text-red-500 mb-4">Our Vision</h3>
-                    <p>
-                        As a collective born in the heart of the Pacific Northwest, we're a tight-knit 
-                        family of artists pushing the boundaries of sound and creativity. Since 2020, 
-                        we've been blending genres - from rap and hip-hop to pop and beyond - creating 
-                        music that feels like home while breaking new ground. We believe in the raw power 
-                        of authentic expression and the magic that happens when diverse artists come 
-                        together to create something truly unique.
-                    </p>
+        </script>
+        <!-- ===========================
+            SITEMAP AND CANONICAL
+            =========================== -->
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+        <link rel="canonical" href="https://thecascadian.github.io/">
+        <link rel="alternate" href="https://thecascadian.github.io/" hreflang="en-us">
+            <!-- ===========================
+            TAILWIND CSS
+                =========================== -->
+            <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+        <!-- ===========================
+            GOOGLE FONTS
+            =========================== -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link 
+            href="https://fonts.googleapis.com/css2?family=Honk&family=Nosifer&family=Vampiro+One&family=Bebas+Neue&family=Oswald:wght@400;600&family=Rubik+Vinyl&display=swap" 
+            rel="stylesheet"            crossorigin="anonymous"
+            >
+        <!-- ===========================
+            GSAP FOR ANIMATIONS
+            =========================== -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+        <!-- ===========================
+            LIGHTBOX2 FOR IMAGE GALLERIES
+            =========================== -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+        <link 
+            rel="stylesheet" 
+            href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"
+            integrity="sha384-..."
+            crossorigin="anonymous"
+            >
+        <!-- ===========================
+            CUSTOM CSS (EXTERNAL FILE)
+            =========================== -->
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body class="bg-gray-900 text-gray-300 cursor-none">
+        <!-- ===========================
+            NAVIGATION
+            =========================== -->
+        <nav class="fixed w-full bg-black bg-opacity-80 z-50 px-6 py-4">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <div class="text-2xl grunge-text text-white">
+                        PUBLIK DISTURBVNCE
                 </div>
-                <!-- Our Mission -->
-                <div class="about-row bg-zinc-800 p-6 rounded-lg">
-                    <h3 class="text-2xl text-red-500 mb-4">Our Mission</h3>
-                    <p>
-                        We strive to create a platform where artists can authentically express their emotions 
-                        and connect with others through fresh, boundary-breaking sounds. Our collective 
-                        represents a fusion of genres - from rap and hip-hop to hyperpop and alt-rock - creating music that 
-                        feels like home while pushing creative limits. Together, we're exploring new sonic 
-                        territories and inviting listeners to vibe with us.
-                    </p>
+                <div class="space-x-6">
+                    <a href="#home" class="nav-link text-white">Home</a>
+                    <a href="#about-dropdown" class="nav-link text-white">About</a>
+                    <a href="#music-dropdown" class="nav-link text-white">Music</a>
+                    <a href="#art-dropdown" class="nav-link text-white">Art</a>
+                    <a href="#contact" class="nav-link text-white">Contact</a>
                 </div>
             </div>
-            <div class="grid md:grid-cols-3 gap-12 mb-12">
-                <!-- New Reviews Section -->
-                <div class="reviews-section bg-zinc-800 p-6 rounded-lg">
-                    <h3 class="text-2xl text-red-500 mb-4">What They're Saying</h3>
-                    <div class="reviews-content">
-                        <!-- Example Review from a Website -->
-                        <blockquote class="italic text-gray-400 mb-4">
-                            "Prophet’s lyrics pay homage to the West Coast’s cultural impact... He describes the region’s beauty and grit, showing his deep love...for (the PNW)."
-                            <cite class="block text-gray-500 mt-2">— LandonBuford Staff</cite>
-                            "Prophet put passion into writing this song which references a variety of rappers he listened to as a child, showcasing his real thoughts and emotions."
-                            <cite class="block text-gray-500 mt-2">— blatantlybluntblog</cite>
-                            "Prophet’s talent for storytelling shines through in the track’s lyrics, painting a vivid picture of life in their area."
-                            <cite class="block text-gray-500 mt-2">— neptismusic</cite>
-                        </blockquote>
-                    </div>
-                </div>
-                <!-- Our Members -->
-                <div class="about-row bg-zinc-800 p-6 rounded-lg col-span-2">
-                    <h3 class="text-2xl text-red-500 mb-4">Our Members</h3>
-                    <div class="members-grid grid md:grid-cols-3 gap-6">
-                        <!-- Member 1 -->
-                        <div class="member-card group relative cursor-pointer">
-                            <img src="assets/profile.png" alt="Prophet" class="w-full h-48 object-cover rounded-md">
-                            <h3 class="text-xl mt-4">Prophet</h3>
-                            <p class="text-gray-500">Artist / Songwriter</p>
-                            <div class="member-links opacity-0 group-hover:opacity-100 absolute top-full left-0 w-full bg-zinc-700 rounded-md p-4 mt-2 transition-opacity duration-300 z-10">
-                                <a href="https://soundcloud.com/prophetpnw" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-soundcloud mr-2"></i>
-                                    <span>SoundCloud</span>
-                                </a>
-                                <a href="https://open.spotify.com/artist/3mdDFELdutQEwoTEpGTIYH?si=3Ee3Q95cTxy34HlHFB8xEg&nd=1&dlsi=58515af1683e442d" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-soundcloud mr-2"></i>
-                                    <span>Spotify</span>
-                                </a>
-                                <a href="https://instagram.com/prophetpnw" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-instagram mr-2"></i>
-                                    <span>Instagram</span>
-                                </a>
-                                <a href="https://www.tiktok.com/@prophet.pnw" class="flex items-center text-gray-300 hover:text-red-500">
-                                    <i class="fab fa-twitter mr-2"></i>
-                                    <span>TikTok</span>
-                                </a>
-                                <a href="https://www.youtube.com/channel/UCO13L-CJ126B_O9p6vCIxDg" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-instagram mr-2"></i>
-                                    <span>YouTube</span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- Member 2 -->
-                        <div class="member-card group relative cursor-pointer">
-                            <img src="assets/dewey.png" alt="DoubleDownDewey" class="w-full h-48 object-cover rounded-md">
-                            <h3 class="text-xl mt-4">DoubleDownDewey</h3>
-                            <p class="text-gray-500">Producer / Artist</p>
-                            <div class="member-links opacity-0 group-hover:opacity-100 absolute top-full left-0 w-full bg-zinc-700 rounded-md p-4 mt-2 transition-opacity duration-300 z-10">
-                                <a href="https://soundcloud.com/doubledowndewey" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-soundcloud mr-2"></i>
-                                    <span>SoundCloud</span>
-                                </a>
-                                <a href="https://instagram.com/doubledowndewey" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-instagram mr-2"></i>
-                                    <span>Instagram</span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- Member 3 -->
-                        <div class="member-card group relative cursor-pointer">
-                            <img src="assets/genius.png" alt="Unsatisfied Genius" class="w-full h-48 object-cover rounded-md">
-                            <h3 class="text-xl mt-4">Unsatisfied Genius</h3>
-                            <p class="text-gray-500">Artist / Songwriter</p>
-                            <div class="member-links opacity-0 group-hover:opacity-100 absolute top-full left-0 w-full bg-zinc-700 rounded-md p-4 mt-2 transition-opacity duration-300 z-10">
-                                <a href="https://soundcloud.com/crazy-djjace" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-soundcloud mr-2"></i>
-                                    <span>SoundCloud</span>
-                                </a>
-                                <a href="https://instagram.com/unsatisfiedgenius" class="flex items-center text-gray-300 hover:text-red-500 mb-2">
-                                    <i class="fab fa-instagram mr-2"></i>
-                                    <span>Instagram</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-      <!-- MUSIC SECTION -->
-      <section id="music" class="py-20 px-6 bg-black">
-          <div class="max-w-6xl mx-auto">
-              <h2 class="text-4xl section-title mb-16 text-center text-white">Our Music</h2>
-              <div class="grid md:grid-cols-3 gap-8">
-                  <!-- Music Item 1 -->
-                  <div class="music-item">
-                      <iframe 
-                          width="100%" 
-                            height="500" 
-                            scrolling="no" 
-                            frameborder="no" 
-                            allow="autoplay" 
-                            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1914470543&color=%23313033&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
-                      </iframe>
-                      <div class="music-info mt-4">
-                          <div class="soundcloud-credit text-gray-400 text-sm">
-                                <a href="https://soundcloud.com/prophetpnw" title="Prophet" target="_blank" class="hover:text-red-500">Prophet</a> · 
-                                <a href="https://soundcloud.com/prophetpnw/sets/no-faith-prophet-ep" title="NO FAITH - EP" target="_blank" class="hover:text-red-500">NO FAITH - EP</a>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Music Item 2 -->
-                  <div class="music-item">
-                        <iframe 
-                            width="100%" 
-                            height="500" 
-                            scrolling="no" 
-                            frameborder="no" 
-                            allow="autoplay" 
-                            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1895925672&color=%23313033&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
-                        </iframe>
-                        <div class="music-info mt-4">
-                            <div class="soundcloud-credit text-gray-400 text-sm">
-                                <a href="https://soundcloud.com/doubledowndewey" title="DoubleDownDewey" target="_blank" class="hover:text-red-500">DoubleDownDewey</a> · 
-                                <a href="https://soundcloud.com/doubledowndewey/sunset-reverie" title="Absent" target="_blank" class="hover:text-red-500">Absent</a>
-                            </div>
-                        </div>
-                  </div>
-                  <!-- Music Item 3 -->
-                  <div class="music-item">
-                      <iframe 
-                          width="100%" 
-                          height="500" 
-                          scrolling="no" 
-                          frameborder="no" 
-                          allow="autoplay" 
-                          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1991793031&color=%23313033&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
-                      </iframe>
-                      <div class="music-info mt-4">
-                          <div class="soundcloud-credit text-gray-400 text-sm">
-                                <a href="https://soundcloud.com/doubledowndewey" title="DoubleDownDewey" target="_blank" class="hover:text-red-500">DoubleDownDewey, Unsatisfied Genius</a> · 
-                                <a href="https://soundcloud.com/doubledowndewey/unsatisfied-genius-problems-prod-doubledowndewey" title="Problems" target="_blank" class="hover:text-red-500">Problems</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-
-        <!-- ART SECTION -->
-        <section id="art" class="py-20 px-6 bg-zinc-900">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl section-title mb-16 text-center text-white">Visual Art</h2>
-                <div class="masonry-grid grid md:grid-cols-3 gap-8">
-                    <!-- Art Item 1 -->
-                    <div class="art-item">
-                        <a href="assets/istockphoto-1147544807-612x612.jpg" data-lightbox="gallery" data-title="Album Cover - Shadow">
-                            <img src="assets/istockphoto-1147544807-612x612.jpg" alt="Album Cover - Shadow" class="w-full h-auto rounded-md shadow-lg">
-                        </a>
-                        <p class="mt-2 text-center text-gray-400">Album Cover - Shadow</p>
-                    </div>
-                    <!-- Art Item 2 -->
-                    <div class="art-item">
-                        <a href="assets/istockphoto-1147544807-612x612.jpg" data-lightbox="gallery" data-title="Poster - Echo">
-                            <img src="assets/istockphoto-1147544807-612x612.jpg" alt="Poster - Echo" class="w-full h-auto rounded-md shadow-lg">
-                        </a>
-                        <p class="mt-2 text-center text-gray-400">Poster - Echo</p>
-                    </div>
-                    <!-- Art Item 3 -->
-                    <div class="art-item">
-                        <a href="assets/istockphoto-1147544807-612x612.jpg" data-lightbox="gallery" data-title="Promotional Banner - Fusion">
-                            <img src="assets/istockphoto-1147544807-612x612.jpg" alt="Promotional Banner - Fusion" class="w-full h-auto rounded-md shadow-lg">
-                        </a>
-                        <p class="mt-2 text-center text-gray-400">Promotional Banner - Fusion</p>
-                    </div>
-                    <!-- Add more art items as needed -->
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT SECTION -->
-        <section id="contact" class="py-20 px-6 bg-black">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl section-title mb-16 text-center text-white">Contact Us</h2>
-                <form 
-                    id="contact-form" 
-                    action="https://formspree.io/f/mvggbnjq" 
-                    method="POST" 
-                    class="space-y-6 bg-zinc-800 p-8 rounded-lg shadow-lg"
-                >
-                    <!-- Honeypot field for spam protection -->
-                    <input type="text" name="_gotcha" style="display:none">
-
-                    <div>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            placeholder="Name" 
-                            required 
-                            class="w-full p-4 bg-zinc-700 border border-zinc-600 focus:border-red-800 transition-colors duration-300 rounded-md text-black"
-                        >
-                    </div>
-                    <div>
-                        <input 
-                            type="email" 
-                            name="email" 
-                            placeholder="Email" 
-                            required 
-                            class="w-full p-4 bg-zinc-700 border border-zinc-600 focus:border-red-800 transition-colors duration-300 rounded-md text-black"
-                        >
-                    </div>
-                    <div>
-                        <textarea 
-                            name="message" 
-                            placeholder="Message" 
-                            rows="6" 
-                            required 
-                            class="w-full p-4 bg-zinc-700 border border-zinc-600 focus:border-red-800 transition-colors duration-300 rounded-md text-black"
-                        ></textarea>
-                    </div>
-                    <!-- Optional: Redirect to a thank-you page after submission -->
-                    <!-- <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> -->
-                    <button 
-                        type="submit" 
-                        class="w-full py-4 bg-red-800 hover:bg-red-700 transition-colors duration-300 text-white uppercase tracking-wider rounded-md"
+        </nav>
+        <!-- ===========================
+            HERO SECTION
+            =========================== -->
+        <section 
+            id="home" 
+            class="hero-section relative flex items-center justify-center text-center h-screen overflow-hidden"
+            >
+            <!-- Video Background -->
+            <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+                <source src="assets/hero-background.mp4" type="video/mp4">
+            </video>
+            <!-- Fallback Image (hidden by default) -->
+                <img 
+                    src="assets/grunge-texture.jpg" 
+                    alt="Hero Background" 
+                class="absolute top-0 left-0 w-full h-full object-cover z-0 hidden video-fallback"
                     >
-                        Send Message
-                    </button>
-                </form>
+                <!-- HERO Content Overlay for text visibility (hidden on smaller screens) -->
+                <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10 hidden md:block"></div>
+            <div class="relative z-20 max-w-4xl mx-auto px-4">
+                <h1 class="text-6xl md:text-8xl grunge-text mb-6 text-white">
+                    PROMOTE PASSION
+                </h1>
+                <p class="text-xl md:text-2xl mb-12 opacity-90">
+                    WHERE SOUNDSCAPES MEET NEW EXPERIENCES
+                </p>
+                <a 
+                    href="#about-dropdown" 
+                    class="inline-block px-8 py-4 bg-red-800 hover:bg-red-700 transition-colors duration-300 text-white text-lg uppercase tracking-wider button-honk"
+                    >
+                Explore the Collective
+                </a>
             </div>
+            <!-- Audio Visualization Canvas -->
+            <canvas id="audio-visualizer" class="absolute top-0 left-0 w-full h-full z-5 pointer-events-none"></canvas>
         </section>
-
-        <!-- FOOTER -->
-        <footer class="site-footer">
-            <div class="footer-container max-w-6xl mx-auto px-6">
-                <div class="footer-content flex justify-between items-start mb-8">
-                    <!-- Footer Logo -->
-                    <div class="footer-logo">
-                        <h3 class="text-2xl grunge-text text-white">UNTITLED</h3>
-                        <span class="footer-tagline">MUSIC COLLECTIVE</span>
+        <!-- ===========================
+            ABOUT SECTION (Dropdown Style)
+            =========================== -->
+        <section id="about-dropdown" class="py-20 px-6 bg-zinc-900">
+            <div class="max-w-6xl mx-auto">
+                <!-- About Toggle Header -->
+                <h2 
+                    class="text-4xl section-title mb-6 text-center text-white cursor-pointer flex justify-center items-center"
+                    onclick="toggleSection('about-content')"
+                    >
+                    About Us
+                    <svg id="about-icon" class="w-6 h-6 ml-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h2>
+                <!-- About Content (Initially Hidden) -->
+                <div id="about-content" class="hidden space-y-12 bg-zinc-800 p-6 rounded-lg transition-all duration-500">
+                    <div class="grid md:grid-cols-3 gap-12">
+                        <!-- New Reviews Section -->
+                        <div class="reviews-section bg-zinc-700 p-6 rounded-lg">
+                            <h3 class="text-2xl text-red-500 mb-4">What They're Saying</h3>
+                            <div class="reviews-content">
+                                <blockquote class="italic text-gray-400 mb-4">
+                                        "Prophet’s lyrics pay homage to the West Coast’s cultural impact... He describes the region’s beauty and grit, showing his deep love...for (the PNW)."
+                                        <cite class="block text-gray-500 mt-2">— LandonBuford Staff</cite>
+                                        "Prophet put passion into writing this song which references a variety of rappers he listened to as a child, showcasing his real thoughts and emotions."
+                                        <cite class="block text-gray-500 mt-2">— blatantlybluntblog</cite>
+                                        "Prophet’s talent for storytelling shines through in the track’s lyrics, painting a vivid picture of life in their area."
+                                        <cite class="block text-gray-500 mt-2">— neptismusic</cite>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <!-- Our Members -->
+                        <div class="about-row bg-zinc-700 p-6 rounded-lg col-span-2">
+                            <h3 class="text-2xl text-red-500 mb-4">Our Members</h3>
+                            <div class="members-grid grid md:grid-cols-3 gap-6">
+                                <!-- Member 1 -->
+                                <div class="member-card group relative cursor-pointer">
+                                    <img 
+                                        src="assets/profile.png" 
+                                        alt="Prophet Profile Picture" 
+                                        class="w-full h-48 object-cover rounded-md"
+                                        >
+                                    <h3 class="text-xl mt-4">Prophet</h3>
+                                    <p class="text-gray-500">Artist / Songwriter</p>
+                                    <div 
+                                        class="member-links opacity-0 group-hover:opacity-100 absolute top-full left-0 w-full bg-zinc-600 rounded-md p-4 mt-2 transition-opacity duration-300 z-10"
+                                            >
+                                        <a 
+                                            href="https://soundcloud.com/prophetpnw" 
+                                        class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                        >
+                                    <i class="fab fa-soundcloud mr-2"></i>
+                                    <span>SoundCloud</span>
+                                    </a>
+                                        <a 
+                                            href="https://open.spotify.com/artist/3mdDFELdutQEwoTEpGTIYH?si=3Ee3Q95cTxy34HlHFB8xEg&nd=1&dlsi=58515af1683e442d" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-spotify mr-2"></i>
+                                        <span>Spotify</span>
+                                        </a>
+                                        <a 
+                                            href="https://instagram.com/prophetpnw" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-instagram mr-2"></i>
+                                        <span>Instagram</span>
+                                        </a>
+                                        <a 
+                                            href="https://www.tiktok.com/@prophet.pnw" 
+                                            class="flex items-center text-gray-300 hover:text-red-500"
+                                            >
+                                        <i class="fab fa-tiktok mr-2"></i>
+                                        <span>TikTok</span>
+                                        </a>
+                                        <a 
+                                            href="https://www.youtube.com/channel/UCO13L-CJ126B_O9p6vCIxDg" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-youtube mr-2"></i>
+                                        <span>YouTube</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Member 2 -->
+                                <div class="member-card group relative cursor-pointer">
+                                    <img 
+                                            src="assets/dewey.png" 
+                                            alt="DoubleDownDewey Profile Picture" 
+                                            class="w-full h-48 object-cover rounded-md"
+                                        >
+                                    <h3 class="text-xl mt-4">DoubleDownDewey</h3>
+                                    <p class="text-gray-500">Producer / Artist</p>
+                                    <div 
+                                        class="member-links opacity-0 group-hover:opacity-100 absolute top-full left-0 w-full bg-zinc-600 rounded-md p-4 mt-2 transition-opacity duration-300 z-10"
+                                        >
+                                        <a 
+                                            href="https://soundcloud.com/doubledowndewey" 
+                                                class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                                >
+                                            <i class="fab fa-soundcloud mr-2"></i>
+                                        <span>SoundCloud</span>
+                                        </a>
+                                        <a 
+                                        href="https://open.spotify.com/user/gtznh1reaq81vbn0jgflnohyv?si=1c6d129f62d544e3" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-soundcloud mr-2"></i>
+                                        <span>Spotify</span>
+                                        </a>
+                                        <a 
+                                            href="https://instagram.com/doubledowndewey" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-instagram mr-2"></i>
+                                        <span>Instagram</span>
+                                        </a>
+                                        <a 
+                                            href="https://www.youtube.com/@DoubleDownDewey" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-instagram mr-2"></i>
+                                        <span>YouTube</span>
+                                        </a>
+                                        
+                                    </div>
+                                </div>
+                                <!-- Member 3 -->
+                                <div class="member-card group relative cursor-pointer">
+                                    <img 
+                                        src="assets/genius.png" 
+                                        alt="Unsatisfied Genius Profile Picture" 
+                                        class="w-full h-48 object-cover rounded-md"
+                                        >
+                                    <h3 class="text-xl mt-4">Unsatisfied Genius</h3>
+                                    <p class="text-gray-500">Artist / Songwriter</p>
+                                    <div 
+                                        class="member-links opacity-0 group-hover:opacity-100 absolute top-full left-0 w-full bg-zinc-600 rounded-md p-4 mt-2 transition-opacity duration-300 z-10"
+                                        >
+                                        <a 
+                                            href="https://open.spotify.com/artist/6Jkd93jRm3q3lGRpFCVhEB?si=ucKxBLIXSTi0PGyVooA_Fw" 
+                                            class="flex items-center text-gray-300 hover:text-red-500 mb-2"
+                                            >
+                                        <i class="fab fa-soundcloud mr-2"></i>
+                                        <span>Spotify</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Social Links -->
-                    <div class="footer-social flex space-x-6">
-                        <a href="#" class="social-link hover:text-red-500">FACEBOOK</a>
-                        <a href="#" class="social-link hover:text-red-500">TWITTER</a>
-                        <a href="#" class="social-link hover:text-red-500">INSTAGRAM</a>
+            </section>
+            <!-- ===========================
+                MUSIC SECTION (Dropdown Style)
+                =========================== -->
+            <section id="music-dropdown" class="py-20 px-6 bg-black">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Music Toggle Header -->
+                    <h2 
+                        class="text-4xl section-title mb-6 text-center text-white cursor-pointer flex justify-center items-center"
+                        onclick="toggleSection('music-content')"
+                    >
+                        Our Music
+                        <svg id="music-icon" class="w-6 h-6 ml-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </h2>
+                    <!-- Music Content (Initially Hidden) -->
+                    <div id="music-content" class="hidden space-y-8 transition-all duration-500">
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <!-- Music Item 1 -->
+                            <div class="music-item relative">
+                                <div class="music-info mt-4">
+                                    <iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1937501523&color=%23313033&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/prophetpnw" title="Prophet" target="_blank" style="color: #cccccc; text-decoration: none;">Prophet</a> · <a href="https://soundcloud.com/prophetpnw/sets/prophets-polished-playlist" title="Prophet&#x27;s Polished Playlist" target="_blank" style="color: #cccccc; text-decoration: none;">Prophet&#x27;s Polished Playlist</a></div>
+                                </div>
+                            </div>
+                            <!-- Music Item 2 -->
+                            <div class="music-item relative">
+                                <div class="music-info mt-4">
+                                    <iframe style="border-radius:1px" src="https://open.spotify.com/embed/artist/6Jkd93jRm3q3lGRpFCVhEB?utm_source=generator" width="100%" height="450" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                                </div>
+                            </div>
+
+                            <!-- Music Item 3 -->
+                            <div class="music-item relative">
+
+                                <div class="music-info mt-4">
+                                    <iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1937499703&color=%23313033&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/doubledowndewey" title="DoubleDownDewey" target="_blank" style="color: #cccccc; text-decoration: none;">DoubleDownDewey</a> · <a href="https://soundcloud.com/doubledowndewey/sets/doubledowndeweys-songs" title="DoubleDownDeweys songs" target="_blank" style="color: #cccccc; text-decoration: none;">DoubleDownDeweys songs</a></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Footer Bottom Text -->
-                <div class="footer-bottom">
-                    <p class="text-gray-500 text-sm">© 2025 UNTITLED MUSIC COLLECTIVE. ALL RIGHTS RESERVED.</p>
+            </section>
+            <!-- ===========================
+                ART SECTION (Dropdown Style)
+                =========================== -->
+            <section id="art-dropdown" class="py-20 px-6 bg-zinc-900 relative">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Art Toggle Header -->
+                    <h2 
+                        class="text-4xl section-title mb-6 text-center text-white cursor-pointer flex justify-center items-center"
+                        onclick="toggleSection('art-content')"
+                        >
+                        Visual Art
+                        <svg id="art-icon" class="w-6 h-6 ml-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </h2>
+                    <!-- Art Content (Initially Hidden) -->
+                    <div id="art-content" class="hidden space-y-8 relative">
+                        <!-- Particle Effects Canvas -->
+                        <canvas id="particle-canvas" class="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"></canvas>
+                        
+                        <!-- Carousel Container -->
+                        <div id="carousel-container" class="relative overflow-hidden">
+                            <div id="carousel-track" class="flex transition-transform duration-500 ease-in-out">
+                                <div class="carousel-slide flex-shrink-0 w-full">
+                                    <img src="assets\dewey.jpg" alt="Art 1" class="w-full h-auto rounded-md shadow-lg">
+                                </div>
+                                <div class="carousel-slide flex-shrink-0 w-full">
+                                    <img src="assets/boji.jpg" alt="Art 2" class="w-full h-auto rounded-md shadow-lg">
+                                </div>
+                                <div class="carousel-slide flex-shrink-0 w-full">
+                                    <img src="assets/group.jpg" alt="Art 3" class="w-full h-auto rounded-md shadow-lg">
+                                </div>
+                                <div class="carousel-slide flex-shrink-0 w-full">
+                                    <img src="assets\ddd_x_prophet.png" alt="Art 4" class="w-full h-auto rounded-md shadow-lg">
+                                </div>
+                            </div>
+                            <button id="prev-btn" aria-label="Previous Slide" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button id="next-btn" aria-label="Next Slide" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                    </div>
                 </div>
-            </div>
-        </footer>
-
-        <!-- Smooth Scrolling Script -->
+            </section>
+            <!-- ===========================
+                CONTACT SECTION WITH DROPDOWN
+                =========================== -->
+            <section id="contact" class="py-20 px-6 bg-black">
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Contact Us Button -->
+                        <div 
+                            id="contact-toggle" 
+                            class="text-4xl section-title mb-6 text-center text-white cursor-pointer flex justify-center items-center"
+                            onclick="toggleSection('contact-form-container')"
+                            >
+                            <h2 class="inline-flex items-center">
+                                Contact Us
+                                <svg id="contact-icon" class="w-6 h-6 ml-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="toggleSection('contact-form-container')">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </h2>
+                        </div>
+                        <!-- Contact Form (initially hidden) -->
+                        <div 
+                            id="contact-form-container" 
+                            class="hidden space-y-6 bg-zinc-800 p-8 rounded-lg shadow-lg transition-all duration-500"
+                            >
+                            <form 
+                                id="contact-form" 
+                                action="https://formspree.io/f/mvggbnjq" 
+                                method="POST" 
+                                class="space-y-6"
+                                >
+                                <!-- Honeypot field for spam protection (hidden) -->
+                                <input type="text" name="_gotcha" style="display:none">
+                                <div>
+                                    <input 
+                                        type="text" 
+                                        name="name" 
+                                        placeholder="Name" 
+                                        required 
+                                        class="w-full p-4 bg-zinc-700 border border-zinc-600 focus:border-red-800 transition-colors duration-300 rounded-md text-black"
+                                        >
+                                </div>
+                                <div>
+                                    <input 
+                                        type="email" 
+                                        name="email" 
+                                        placeholder="Email" 
+                                        required 
+                                        class="w-full p-4 bg-zinc-700 border border-zinc-600 focus:border-red-800 transition-colors duration-300 rounded-md text-black"
+                                        >
+                                </div>
+                                <div>
+                                    <textarea 
+                                        name="message" 
+                                        placeholder="Message" 
+                                        rows="6" 
+                                        required 
+                                        class="w-full p-4 bg-zinc-700 border border-zinc-600 focus:border-red-800 transition-colors duration-300 rounded-md text-black"
+                                        ></textarea>
+                                </div>
+                                <button 
+                                    type="submit" 
+                                    class="w-full py-4 bg-red-800 hover:bg-red-700 transition-colors duration-300 text-white uppercase tracking-wider rounded-md"
+                                    >
+                                Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+            </section>
+            <!-- ===========================
+                FOOTER
+                =========================== -->
+            <footer class="site-footer">
+                <div class="footer-container max-w-6xl mx-auto px-6">
+                    <div class="footer-content flex justify-between items-start mb-8">
+                        <!-- Footer Logo -->
+                        <div class="footer-logo">
+                            <img src="assets/mainicon.png" alt="Publik Disturbvnce Logo" class="w-48 h-auto">
+                        </div>
+                    </div>
+                    <!-- Footer Bottom Text -->
+                    <div class="footer-bottom">
+                        <p class="text-gray-500 text-sm">
+                            © 2025 PUBLIK DISTURBVNCE. ALL RIGHTS RESERVED.
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </body>
+        <!-- ===========================
+            CUSTOM JS (EXTERNAL FILE)
+            =========================== -->
+        <script src="main.js"></script>
+        <!-- Cursor trail effect script -->
         <script>
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        window.scrollTo({
-                            top: target.offsetTop - 80, // Adjust for fixed nav height
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-
-            // GSAP Animations (Optional Enhancements)
-            gsap.from('.grunge-text', { duration: 1.5, y: -50, opacity: 0, ease: 'bounce' });
-            gsap.from('.hero-section p', { duration: 1.5, y: 50, opacity: 0, delay: 0.5 });
-            gsap.from('.hero-section a', { duration: 1.5, scale: 0.5, opacity: 0, delay: 1 });
-
-            // Initialize Lightbox
-            lightbox.option({
-              'resizeDuration': 200,
-              'wrapAround': true
-            });
-
-            // Form Submission Handling
+            // Function to toggle dropdown sections
+            function toggleSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                const icon = document.getElementById(sectionId.replace('-content', '') + '-icon');
+                if (section.classList.contains('hidden')) {
+                    section.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                } else {
+                    section.classList.add('hidden');
+                    icon.classList.remove('rotate-180');
+                }
+            }
+        </script>
+        <!-- JavaScript for Carousel Functionality -->
+        <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const form = document.getElementById('contact-form');
-
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault(); // Prevent default form submission
-
-                    const formData = new FormData(form);
-
-                    fetch(form.action, {
-                        method: form.method,
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Thank you for your message! We will get back to you soon.');
-                            form.reset();
-                        } else {
-                            response.json().then(data => {
-                                if (Object.hasOwn(data, 'errors')) {
-                                    alert(data.errors.map(error => error.message).join("\n"));
-                                } else {
-                                    alert('Oops! There was a problem submitting your form.');
-                                }
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Oops! There was a problem submitting your form.');
-                    });
-                });
+                const track = document.getElementById('carousel-track');
+                const slides = Array.from(track.children);
+                const prevButton = document.getElementById('prev-btn');
+                const nextButton = document.getElementById('next-btn');
+                let currentIndex = 0;
+        
+                const updateCarouselPosition = () => {
+                    const slideWidth = slides[0].getBoundingClientRect().width;
+                    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                };
+        
+                const moveToNextSlide = () => {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    updateCarouselPosition();
+                };
+        
+                const moveToPrevSlide = () => {
+                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    updateCarouselPosition();
+                };
+        
+                nextButton.addEventListener('click', moveToNextSlide);
+                prevButton.addEventListener('click', moveToPrevSlide);
+        
+                window.addEventListener('resize', updateCarouselPosition);
             });
         </script>
+        <!-- JavaScript for Lyrics Toggle Functionality -->
+        <script>
+            /**
+             * Toggles the visibility of the lyrics section.
+             * @param {string} lyricsId - The ID of the lyrics section to toggle.
+             */
+            function toggleLyrics(lyricsId) {
+                const lyricsSection = document.getElementById(lyricsId);
+                const toggleButton = lyricsSection.previousElementSibling; // The button is placed just before the lyrics section
 
-</body>
-</html>
+                if (lyricsSection.classList.contains('hidden')) {
+                    lyricsSection.classList.remove('hidden');
+                    toggleButton.textContent = 'Hide Lyrics';
+                    toggleButton.setAttribute('aria-expanded', 'true');
+                } else {
+                    lyricsSection.classList.add('hidden');
+                    toggleButton.textContent = 'Show Lyrics';
+                    toggleButton.setAttribute('aria-expanded', 'false');
+                }
+            }
+        </script>
+
+    </html>

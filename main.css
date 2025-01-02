@@ -1,0 +1,307 @@
+/* ===========================
+   FILE 2: main.css
+   =========================== */
+
+/* 
+   Thoroughly commented for clarity:
+   This CSS file houses all the custom styling,
+   separating it from the HTML for modular updates.
+*/
+
+/* ---------------------------
+   BODY DEFAULT STYLES
+   --------------------------- */
+   body {
+    font-family: 'Oswald', sans-serif;
+    /* Default site-wide cursor */
+    cursor: url('assets/cursors/NORMAL.cur'), default;
+}
+
+/* ---------------------------
+   CUSTOM CURSOR CLASSES
+   --------------------------- */
+a {
+    /* Link uses a MOVE cursor */
+    cursor: url('assets/cursors/MOVE.cur'), pointer;
+}
+.button {
+    cursor: url('assets/cursors/BUSY.cur'), pointer;
+}
+.cursor-normal {
+    cursor: url('assets/cursors/NORMAL.cur'), default;
+}
+.cursor-busy {
+    cursor: url('assets/cursors/BUSY.cur'), wait;
+}
+.cursor-move {
+    cursor: url('assets/cursors/move.cur'), move;
+}
+.cursor-no {
+    cursor: url('assets/cursors/NO.cur'), not-allowed;
+}
+.cursor-wib {
+    cursor: url('assets/cursors/WIB.cur'), pointer;
+}
+
+/* ---------------------------
+   TYPOGRAPHY & TEXT EFFECTS
+   --------------------------- */
+.grunge-text {
+    font-family: 'Rubik Vinyl' ; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.body_text {
+    font-family: 'Bebas Neue', sans-serif;
+}
+.section-title {
+    font-family: 'Vampiro One', cursive;
+    font-size: 4rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ---------------------------
+   HERO SECTION
+   --------------------------- */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+.hero-section video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 0;
+}
+
+/* ---------------------------
+   NAVIGATION
+   --------------------------- */
+.nav-link {
+    position: relative;
+    transition: color 0.3s;
+    /* Example: pointer cursor (move.cur) on nav links */
+    cursor: url('assets/cursors/move.cur'), default;
+}
+.nav-link:hover {
+    color: #ff3333;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: #ff3333;
+    bottom: -5px;
+    left: 0;
+    transition: width 0.3s;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* ---------------------------
+   MEMBER CARDS
+   --------------------------- */
+.member-card {
+    background: #1a1a1a;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    cursor: url('assets/cursors/WIB.cur'), move;
+}
+.member-card:hover {
+    transform: translateY(-5px);
+}
+
+/* ---------------------------
+   MUSIC ITEM STYLES
+   --------------------------- */
+.music-item {
+    background: #1a1a1a;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+.music-item:hover {
+    transform: translateY(-5px);
+    cursor: url('assets/cursors/NORMAL.cur'), move;
+}
+
+/* Ensure the dropdown-content appears above other elements */
+.dropdown-content {
+    z-index: 10;
+}
+
+/* Optional: Add transition effects to dropdowns */
+.dropdown-content {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show dropdown content when parent has 'dropdown-open' class */
+.dropdown-open .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---------------------------
+   FOOTER STYLES
+   --------------------------- */
+.site-footer {
+    background: #1a1a1a;
+    padding: 3rem 0 1rem;
+    border-top: 3px solid #333;
+    box-shadow: 0 -2px 15px rgba(0,0,0,0.5);
+    cursor: url('assets/cursors/NORMAL.cur'), move;
+}
+.footer-tagline {
+    color: #888;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+/* ---------------------------
+   BUTTONS
+   --------------------------- */
+.button-honk {
+    font-family: 'Vampiro One', sans-serif;
+    cursor: url('assets/cursors/move.cur'), move;
+}
+
+/* ---------------------------
+   RESPONSIVE ADJUSTMENTS
+   --------------------------- */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .hero-section {
+        background-attachment: scroll;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .music-grid, .members-grid, .art-grid {
+        grid-template-columns: 1fr;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+    }
+    .footer-social {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+/* 
+   .hidden utility class 
+   used for toggling element visibility.
+*/
+.hidden {
+    display: none;
+}
+
+/* ---------------------------
+   INTERACTIVE TIMELINE STYLES (continued)
+   --------------------------- */
+.timeline-container {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.timeline-line {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 1rem 2rem;
+}
+
+.timeline-item.left {
+    left: 0;
+    text-align: right;
+}
+
+.timeline-item.right {
+    left: 50%;
+    text-align: left;
+}
+
+.timeline-content {
+    position: relative;
+    display: inline-block;
+    width: 90%;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.timeline-item.left .timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: -8px;
+    border-width: 8px 0 8px 8px;
+    border-style: solid;
+    border-color: transparent transparent transparent #1a1a1a;
+}
+
+.timeline-item.right .timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -8px;
+    border-width: 8px 8px 8px 0;
+    border-style: solid;
+    border-color: transparent #1a1a1a transparent transparent;
+}
+
+/* ---------------------------
+   RESPONSIVE TIMELINE
+   --------------------------- */
+@media (max-width: 768px) {
+    .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        text-align: left !important;
+    }
+    .timeline-item.left .timeline-content::after,
+    .timeline-item.right .timeline-content::after {
+        left: -8px;
+        border-width: 8px 8px 8px 0;
+        border-color: transparent #1a1a1a transparent transparent;
+    }
+}
+
+.song-lists {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
