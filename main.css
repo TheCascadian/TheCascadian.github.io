@@ -305,3 +305,7 @@ a {
     align-items: flex-start;
     gap: 10px;
 }
+
+#carousel-items > div {
+    width: 100%;
+}
