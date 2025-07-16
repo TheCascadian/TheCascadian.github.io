@@ -334,22 +334,24 @@ class MapViewer {
     }
 
     tryRequestMask() {
-        // FIX: Enhanced service worker readiness handling
-        this.showProgress(true, 0, "Initializing worker...");
-        navigator.serviceWorker.ready.then(() => {
-            this.showProgress(true, 0, "Generating mask...");
-            navigator.serviceWorker.controller.postMessage({
-                type: "generateMask",
-                tileSize: this.CONFIG.TILE_SIZE,
-                cols: this.CONFIG.GRID_COLS,
-                rows: this.CONFIG.GRID_ROWS,
-                offsetX: this.OFFSET.X,
-                offsetY: this.OFFSET.Y
+        this.showProgress(true, 0, 'Initializing worker…');
+        navigator.serviceWorker.ready
+            .then(() => {
+                this.showProgress(true, 0, 'Generating mask…');
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'generateMask',
+                    tileSize: this.CONFIG.TILE_SIZE,
+                    cols: this.CONFIG.GRID_COLS,
+                    rows: this.CONFIG.GRID_ROWS,
+                    offsetX: this.OFFSET.X,
+                    offsetY: this.OFFSET.Y
+                });
+            })
+            .catch(error => {
+                console.error('SW ready failed:', error);
+                this.showProgress(true, 100, 'Error: worker init failed.');
+                // optionally fallback here
             });
-        }).catch(error => {
-            console.error("Service Worker failed to become ready:", error);
-            this.showProgress(true, 100, "Error: Could not initialize worker.");
-        });
     }
 
     setupServiceWorkerChannel() {

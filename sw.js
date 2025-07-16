@@ -10,7 +10,6 @@ const URLS = [
     './map.png',
     './mask.png',
     './sw.js',
-    './utility.js',
     './contextMenu.js'
 ];
 
