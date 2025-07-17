@@ -1,5 +1,5 @@
 /* ========================================================================
- * Clean Commonwealth Atlas – LICENSE
+ * Clean Commonwealth Cartographer – LICENSE
  * ========================================================================
  * Copyright © 2025 Don
  *
