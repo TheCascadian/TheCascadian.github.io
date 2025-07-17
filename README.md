@@ -6,12 +6,7 @@ A GPU‑accelerated, Fallout 4‑themed WebGL map viewer for the Completely Cle
 *A Fallout‑style, WebGL‑accelerated LOD viewer & cell‑planner*  
 > *“War never changes—but your map can.”*
 
-[![Mod Download](https://img.shields.io/badge/Nexus_Mod-94907-3392FF?logo=nexusmods&logoColor=white)](https://www.nexusmods.com/fallout4/mods/94907)  
-[![GitHub Stars](https://img.shields.io/github/stars/TheCascadian/TheCascadian.github.io?style=social)](https://github.com/TheCascadian/TheCascadian.github.io/stargazers)  
-[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)  
-[![Last Commit](https://img.shields.io/github/last-commit/TheCascadian/TheCascadian.github.io?color=lightgrey)](https://github.com/TheCascadian/TheCascadian.github.io/commits/main)  
-[![Static Site](https://img.shields.io/badge/Static%20Site-100%25-blue)](#)  
-[![WebGL2](https://img.shields.io/badge/WebGL2-Accelerated-darkred)](#)
+[![Mod Download](https://img.shields.io/badge/Nexus_Mod-94907-3392FF?logo=nexusmods&logoColor=white)](https://www.nexusmods.com/fallout4/mods/94907)   [![GitHub Stars](https://img.shields.io/github/stars/TheCascadian/TheCascadian.github.io?style=social)](https://github.com/TheCascadian/TheCascadian.github.io/stargazers)   [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)   [![Last Commit](https://img.shields.io/github/last-commit/TheCascadian/TheCascadian.github.io?color=lightgrey)](https://github.com/TheCascadian/TheCascadian.github.io/commits/main)   [![Static Site](https://img.shields.io/badge/Static%20Site-100%25-blue)](#)   [![WebGL2](https://img.shields.io/badge/WebGL2-Accelerated-darkred)](#)
 
 > **Asset Notice**  
 > All trademarked names, images, and game content remain © Bethesda Softworks LLC (a ZeniMax Media company / Microsoft) and © their respective mod authors. This repository distributes *only* original code and derivative low‑resolution LOD tiles generated via **xLODGen** for non‑commercial, transformative use.
