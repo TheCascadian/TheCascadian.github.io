@@ -1,17 +1,12 @@
 <!--
-A GPU‑accelerated, Fallout 4‑themed WebGL map viewer for the Completely Clean Commonwealth mod. Built for in‑browser cell planning, annotation, and collaborative region claims.
+A GPU‑accelerated, Fallout 4‑themed map viewer for the Completely Clean Commonwealth mod. Built for in‑browser cell planning, annotation, and collaborative region claims.
 -->
 
 # **Completely Clean Commonwealth Cartographer**  
 *A Fallout‑style, WebGL‑accelerated LOD viewer & cell‑planner*  
 > *“War never changes—but your map can.”*
 
-[![Mod Download](https://img.shields.io/badge/Nexus_Mod-94907-3392FF?logo=nexusmods&logoColor=white)](https://www.nexusmods.com/fallout4/mods/94907)  
-[![GitHub Stars](https://img.shields.io/github/stars/TheCascadian/TheCascadian.github.io?style=social)](https://github.com/TheCascadian/TheCascadian.github.io/stargazers)  
-[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)  
-[![Last Commit](https://img.shields.io/github/last-commit/TheCascadian/TheCascadian.github.io?color=lightgrey)](https://github.com/TheCascadian/TheCascadian.github.io/commits/main)  
-[![Static Site](https://img.shields.io/badge/Static%20Site-100%25-blue)](#)  
-[![WebGL2](https://img.shields.io/badge/WebGL2-Accelerated-darkred)](#)
+[![Mod Download](https://img.shields.io/badge/Nexus_Mod-94907-3392FF?logo=nexusmods&logoColor=white)](https://www.nexusmods.com/fallout4/mods/94907)   [![GitHub Stars](https://img.shields.io/github/stars/TheCascadian/TheCascadian.github.io?style=social)](https://github.com/TheCascadian/TheCascadian.github.io/stargazers)   [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)   [![Last Commit](https://img.shields.io/github/last-commit/TheCascadian/TheCascadian.github.io?color=lightgrey)](https://github.com/TheCascadian/TheCascadian.github.io/commits/main)   [![Static Site](https://img.shields.io/badge/Static%20Site-100%25-blue)](#)
 
 > **Asset Notice**  
 > All trademarked names, images, and game content remain © Bethesda Softworks LLC (a ZeniMax Media company / Microsoft) and © their respective mod authors. This repository distributes *only* original code and derivative low‑resolution LOD tiles generated via **xLODGen** for non‑commercial, transformative use.
@@ -61,8 +56,8 @@ No Fallout 4 install is required—runs entirely in‑browser with full GPU ac
 |-----------------------|----------------------------------------------------|
 | Fallout 4 LOD Map   | Based on *Completely Clean Commonwealth*           |
 | Cell Planner        | Visual grid selection for mod claims               |
-| WebGL2 Engine       | Fluid zoom/pan via GPU rendering                   |
-| LOD Tiles           | Generated offline with `xLODGen`                   |
+| Optimized Rendering | Fluid zoom/pan via GPU rendering                   |
+| LOD Tilemap         | Generated offline with `xLODGen`                   |
 | Smart Culling       | UUID‑based masking for tile interactivity          |
 | GitHub Integration | Right‑click to annotate & contribute via PRs       |
 
