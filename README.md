@@ -1,5 +1,5 @@
 <!--
-A GPU‑accelerated, Fallout 4‑themed WebGL map viewer for the Completely Clean Commonwealth mod. Built for in‑browser cell planning, annotation, and collaborative region claims.
+A GPU‑accelerated, Fallout 4‑themed map viewer for the Completely Clean Commonwealth mod. Built for in‑browser cell planning, annotation, and collaborative region claims.
 -->
 
 # **Completely Clean Commonwealth Cartographer**  
