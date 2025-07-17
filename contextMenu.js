@@ -3,8 +3,8 @@
     'use strict';
 
     /* ─── GitHub Configuration ───────────────────────────────────────── */
-    const GH_OWNER = window.GH_OWNER || 'your-username';
-    const GH_REPO = window.GH_REPO || 'your-repo';
+    const GH_OWNER = window.GH_OWNER || 'TheCascadian';
+    const GH_REPO = window.GH_REPO || 'TheCascadian.github.io';
     const GH_BASE = `https://github.com/${GH_OWNER}/${GH_REPO}`;
 
     /* ─── Internal State ─────────────────────────────────────────────── */

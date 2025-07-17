@@ -34,7 +34,7 @@ class MapViewer {
         this.needsRedraw = true;
         this.cachedGridPath = null;
 
-        // FIX: Create a stable mask key that's independent of MAP_HASH
+        // Create a stable mask key that's independent of MAP_HASH
         // This ensures mask data can be consistently stored and retrieved
         // even when cache-busting parameters change
         this.MASK_KEY = `mask-stable-v2:${this.CONFIG.GRID_COLS}x${this.CONFIG.GRID_ROWS}@${this.CONFIG.TILE_SIZE}`;
@@ -75,7 +75,7 @@ class MapViewer {
         };
         // FIX: The image loading still uses MAP_HASH for cache-busting
         // This is correct - we want fresh images but stable mask data
-        img.src = "./map.png";
+        img.src = "./assets/map.png";
 
         // add purge cache button handler
         const btn = document.getElementById('purgeCacheButton');

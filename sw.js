@@ -7,8 +7,8 @@ const URLS = [
     './index.html',
     './main.js',
     './style.css',
-    './map.png',
-    './mask.png',
+    './assets/map.png',
+    './assets/mask.png',
     './sw.js',
     './contextMenu.js'
 ];
