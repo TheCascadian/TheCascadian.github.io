@@ -1,4 +1,3 @@
-// debug.js
 (function () {
     'use strict';
     window.MAP_HASH = crypto.randomUUID();

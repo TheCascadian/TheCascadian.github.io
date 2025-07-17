@@ -1,4 +1,3 @@
-// main.js
 'use strict';
 
 if ('serviceWorker' in navigator) {
@@ -73,8 +72,8 @@ class MapViewer {
                 this.tryRevealUI();
             });
         };
-        // FIX: The image loading still uses MAP_HASH for cache-busting
-        // This is correct - we want fresh images but stable mask data
+        // The image loading still uses MAP_HASH for cache-busting
+        // we want fresh images but stable mask data
         img.src = "./assets/map.png";
 
         // add purge cache button handler

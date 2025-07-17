@@ -1,4 +1,3 @@
-// sw.js
 'use strict';
 
 const CACHE_NAME = 'map-viewer-cache-v3';
