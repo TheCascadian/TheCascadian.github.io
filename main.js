@@ -336,23 +336,33 @@ class MapViewer {
     tryRequestMask() {
         this.showProgress(true, 0, 'Initializing worker…');
         navigator.serviceWorker.ready
-            .then(() => {
+            .then(registration => {
                 this.showProgress(true, 0, 'Generating mask…');
-                navigator.serviceWorker.controller.postMessage({
-                    type: 'generateMask',
-                    tileSize: this.CONFIG.TILE_SIZE,
-                    cols: this.CONFIG.GRID_COLS,
-                    rows: this.CONFIG.GRID_ROWS,
-                    offsetX: this.OFFSET.X,
-                    offsetY: this.OFFSET.Y
-                });
+                // pick whichever SW instance is active, waiting or installing
+                const worker =
+                    registration.active ||
+                    registration.waiting ||
+                    registration.installing;
+                if (worker) {
+                    worker.postMessage({
+                        type: 'generateMask',
+                        tileSize: this.CONFIG.TILE_SIZE,
+                        cols: this.CONFIG.GRID_COLS,
+                        rows: this.CONFIG.GRID_ROWS,
+                        offsetX: this.OFFSET.X,
+                        offsetY: this.OFFSET.Y
+                    });
+                } else {
+                    console.error('No service worker instance available to receive messages');
+                    this.showProgress(true, 100, 'Error: worker init failed.');
+                }
             })
             .catch(error => {
                 console.error('SW ready failed:', error);
                 this.showProgress(true, 100, 'Error: worker init failed.');
-                // optionally fallback here
             });
     }
+
 
     setupServiceWorkerChannel() {
         navigator.serviceWorker.ready.then(() => {
