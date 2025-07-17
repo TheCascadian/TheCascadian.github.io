@@ -2,7 +2,7 @@
 A GPU‑accelerated, Fallout 4‑themed WebGL map viewer for the Completely Clean Commonwealth mod. Built for in‑browser cell planning, annotation, and collaborative region claims.
 -->
 
-# 📡 **Completely Clean Commonwealth Cartographer**  
+# **Completely Clean Commonwealth Cartographer**  
 *A Fallout‑style, WebGL‑accelerated LOD viewer & cell‑planner*  
 > *“War never changes—but your map can.”*
 
@@ -18,7 +18,7 @@ A GPU‑accelerated, Fallout 4‑themed WebGL map viewer for the Completely Cle
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 /
@@ -37,7 +37,7 @@ A GPU‑accelerated, Fallout 4‑themed WebGL map viewer for the Completely Cle
 
 ---
 
-## 📸 Preview
+## Preview
 
 > Interactive cell‑based landmask viewer with WebGL2 navigation and annotation.
 

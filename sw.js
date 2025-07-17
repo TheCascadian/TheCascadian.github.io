@@ -52,7 +52,7 @@ self.addEventListener('message', async event => {
 
     // FIX: Always fetch mask.png with a stable URL (no cache-busting)
     // for consistent mask generation, regardless of debug.js hash changes
-    const resp = await fetch('./mask.png', {
+    const resp = await fetch('./assets/mask.png', {
         cache: 'no-store' // Force fresh fetch but without hash parameter
     });
     const blob = await resp.blob();
