@@ -3,7 +3,7 @@ A GPU‑accelerated, Fallout 4‑themed map viewer for the Completely Clean Com
 -->
 
 # **Completely Clean Commonwealth Cartographer**  
-*A Fallout‑style, WebGL‑accelerated LOD viewer & cell‑planner*  
+*A Fallout‑style LOD viewer & cell‑planner*  
 > *“War never changes—but your map can.”*
 
 [![Mod Download](https://img.shields.io/badge/Nexus_Mod-94907-3392FF?logo=nexusmods&logoColor=white)](https://www.nexusmods.com/fallout4/mods/94907)   [![GitHub Stars](https://img.shields.io/github/stars/TheCascadian/TheCascadian.github.io?style=social)](https://github.com/TheCascadian/TheCascadian.github.io/stargazers)   [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)   [![Last Commit](https://img.shields.io/github/last-commit/TheCascadian/TheCascadian.github.io?color=lightgrey)](https://github.com/TheCascadian/TheCascadian.github.io/commits/main)   [![Static Site](https://img.shields.io/badge/Static%20Site-100%25-blue)](#)

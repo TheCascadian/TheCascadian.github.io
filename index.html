@@ -6,7 +6,9 @@
     <title>FO4 Modded Map Renderer</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="./styles/style.css" type="text/css" />
-    <!-- Remove contextMenu.css reference until file exists -->
+
+    <script data-goatcounter="https://thecascadian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
 </head>
 
 <body>
@@ -36,10 +38,22 @@
         </div>
     </div>
     <div id="footer" class="hidden">
-        <span>© 2025 Clean Commonwealth Atlas</span>
+        <span>© 2025 Clean Commonwealth Cartographer</span>
+        <div id="version-banner" class="debug-banner">Loading…</div>
     </div>
     <script type="module" src="main.js"></script>
     <script type="module" src="contextMenu.js"></script>
+    <script>
+        fetch('.version')
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('version-banner').textContent = text.trim();
+            })
+            .catch(() => {
+                document.getElementById('version-banner').textContent = 'v?';
+            });
+    </script>
+
 </body>
 
 </html>
