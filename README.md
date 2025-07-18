@@ -34,7 +34,7 @@ A GPU‑accelerated, Fallout 4‑themed map viewer for the Completely Clean Com
 
 ## Preview
 
-> Interactive cell‑based landmask viewer with WebGL2 navigation and annotation.
+> Interactive cell‑based landmask viewer with navigation and annotation.
 
 ![map-preview](assets/map-preview.webp)
 
@@ -46,7 +46,7 @@ The **Completely Clean Commonwealth Cartographer** is a browser‑based cell pla
 No Fallout 4 install is required—runs entirely in‑browser with full GPU acceleration, precached tile assets, and live annotation tooling.
 
 > Tested in: **Chrome** & **Edge**  
-> Unknown support for Safari (WebGL2 limitations)
+> Unknown support for Safari
 
 ---
 
