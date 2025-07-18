@@ -1,7 +1,7 @@
 /* ========================================================================
  * Clean Commonwealth Cartographer – LICENSE
  * ========================================================================
- * Copyright © 2025 Don
+ * Copyright © 2025 TheCascadian
  *
  * ------------------------------------------------------------------------
  * THIRD‑PARTY CONTENT & TRADEMARK DISCLAIMER
@@ -45,7 +45,7 @@
  * ------------------------------------------------------------------------
  */
 
-Copyright 2025 Don
+Copyright 2025 TheCascadian
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal

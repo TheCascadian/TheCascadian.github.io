@@ -67,23 +67,41 @@
         const canvas = document.getElementById('canvas');
         if (!canvas) throw new Error('Canvas element #canvas not found.');
         const rect = canvas.getBoundingClientRect();
-        const cx = e.clientX - rect.left;
-        const cy = e.clientY - rect.top;
-        const viewer = window.viewer || {};
-        const scale = viewer.scale || 1;
-        const inv = 1 / scale;
-        const offX = viewer.OFFSET?.X || 0;
-        const offY = viewer.OFFSET?.Y || 0;
-        const tile = viewer.CONFIG?.TILE_SIZE || 1;
-        const mapX = cx * inv - offX;
-        const mapY = cy * inv - offY;
+
+        // Device pixel ratio from viewer (or fallback to window)
+        const dpr = window.viewer?.dpr || window.devicePixelRatio || 1;
+
+        // Screen-space mouse position relative to canvas
+        const cssX = e.clientX - rect.left;
+        const cssY = e.clientY - rect.top;
+
+        // Viewer pan/zoom state
+        const state = window.viewer?.state || { panX: 0, panY: 0, scale: 1 };
+        const scale = state.scale || 1;
+        const panX = state.panX || 0;
+        const panY = state.panY || 0;
+
+        // World (image) coordinates, including pan/zoom/dpr
+        const worldX = (cssX * dpr) / scale + panX;
+        const worldY = (cssY * dpr) / scale + panY;
+
+        // Tile grid offset and size from viewer config
+        const offsetX = window.viewer?.OFFSET?.X || 0;
+        const offsetY = window.viewer?.OFFSET?.Y || 0;
+        const tile = window.viewer?.CONFIG?.TILE_SIZE || 1;
+
+        // Tile indices
+        const tx = Math.floor((worldX - offsetX) / tile);
+        const ty = Math.floor((worldY - offsetY) / tile);
+
         return {
-            tx: Math.floor(mapX / tile),
-            ty: Math.floor(mapY / tile),
-            x: cx,
-            y: cy
+            tx,
+            ty,
+            x: cssX,
+            y: cssY
         };
     }
+
 
     function annotateCell() {
         if (!lastContextEvent) return;

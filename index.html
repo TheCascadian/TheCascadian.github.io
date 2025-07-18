@@ -2,32 +2,32 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>FO4 Modded Map Renderer</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./styles/style.css" type="text/css" />
+    <!-- Remove contextMenu.css reference until file exists -->
 </head>
 
 <body>
-    <div id="header">Completely Clean Commonwealth</div>
 
-    <!-- 2D canvas -->
-    <canvas id="canvas"></canvas>
-    <!-- WebGL grid overlay -->
-    <canvas id="glGridCanvas"></canvas>
+    <div id="header">
+        <span>Completely Clean Commonwealth</span>
+    </div>
 
+    <div id="container">
+        <canvas id="canvas"></canvas>
+    </div>
     <div id="controls" class="hidden">
         <button onclick="viewer.resetView()">Reset View</button>
         <button onclick="viewer.clearSelection()">Clear Selection</button>
         <div>Scale: <span id="scaleDisplay">1.00</span></div>
         <button id="purgeCacheButton">Purge Cache</button>
     </div>
-
     <div id="tileInfo" class="hidden">
         <div>Tile: <span id="tileDisplay">-</span></div>
         <div>Selected: <span id="selectedCount">0</span></div>
     </div>
-
     <div id="loadingIndicator">
         <div class="spinner"></div>
         <div id="progressText">Generating mask...</div>
@@ -35,13 +35,11 @@
             <div id="progressFill"></div>
         </div>
     </div>
-
     <div id="footer" class="hidden">
-        © 2025 Clean Commonwealth Cartographer
+        <span>© 2025 Clean Commonwealth Atlas</span>
     </div>
-
-    <!-- Single module loader: this makes `import` work -->
-    <script type="module" src="./main.js"></script>
+    <script type="module" src="main.js"></script>
+    <script type="module" src="contextMenu.js"></script>
 </body>
 
 </html>

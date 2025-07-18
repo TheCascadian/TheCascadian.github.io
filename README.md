@@ -111,7 +111,7 @@ Inspired by:
 ## License
 
 Licensed under the MIT License.  
-Free for use, modification, and distribution with attribution. See [TheCascadian.github.io\LICENSE.md](LICENSE.md).
+Free for use, modification, and distribution with attribution. See [TheCascadian.github.io/LICENSE.md](LICENSE.md).
 
 ---
 
