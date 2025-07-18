@@ -1,3 +1,11 @@
+/*
+ * Clean Commonwealth Cartographer
+ * Copyright (c) 2025 TheCascadian
+ *
+ * Licensed under the MIT License.
+ * See LICENSE.md for details.
+ */
+
 (function () {
     'use strict';
     window.MAP_HASH = crypto.randomUUID();

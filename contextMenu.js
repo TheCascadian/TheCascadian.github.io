@@ -1,3 +1,11 @@
+/*
+ * Clean Commonwealth Cartographer
+ * Copyright (c) 2025 TheCascadian
+ *
+ * Licensed under the MIT License.
+ * See LICENSE.md for details.
+ */
+
 (function () {
     'use strict';
 
@@ -246,45 +254,33 @@
     }
 
     /* ─── Context Menu Construction ──────────────────────────────────── */
+    /* Context Menu Construction */
     const menu = document.createElement('div');
     menu.id = 'custom-context-menu';
-    Object.assign(menu.style, {
-        position: 'absolute',
-        display: 'none',
-        background: 'var(--color-panel, #2b2b2b)',
-        border: '1px solid var(--color-border, #888)',
-        borderRadius: '4px',
-        padding: '4px 0',
-        zIndex: 1e6,
-        fontFamily: 'monospace',
-        fontSize: '14px',
-        minWidth: '220px',
-        userSelect: 'none'
-    });
     menu.innerHTML = `
-        <ul style="margin:0;padding:0;list-style:none;">
-          <li class="has-submenu">Browser Options
+        <ul>
+        <li class="has-submenu">Browser Options
             <ul class="submenu">
-              <li data-action="copy-url">Copy Page URL</li>
-              <li data-action="open-devtools">Open DevTools</li>
+            <li data-action="copy-url">Copy Page URL</li>
+            <li data-action="open-devtools">Open DevTools</li>
             </ul>
-          </li>
-          <li class="has-submenu">Cell Actions
+        </li>
+        <li class="has-submenu">Cell Actions
             <ul class="submenu">
-              <li data-action="annotate-cell">Annotate Cell</li>
-              <li data-action="notate-cell">Notate Cell</li>
-              <li data-action="label-cell">Label Cell</li>
-              <li class="has-submenu">Claim
+            <li data-action="annotate-cell">Annotate Cell</li>
+            <li data-action="notate-cell">Notate Cell</li>
+            <li data-action="label-cell">Label Cell</li>
+            <li class="has-submenu">Claim
                 <ul class="submenu">
-                  <li data-action="claim-cell-mod">Cell for Mod (GitHub)</li>
-                  <li data-action="claim-cell-group">Cell Group as Region (GitHub)</li>
+                <li data-action="claim-cell-mod">Cell for Mod (GitHub)</li>
+                <li data-action="claim-cell-group">Cell Group as Region (GitHub)</li>
                 </ul>
-              </li>
-              <li data-action="tag-cell-pr">Tag Cell for PR</li>
+            </li>
+            <li data-action="tag-cell-pr">Tag Cell for PR</li>
             </ul>
-          </li>
-          <li data-action="purge-cache">Purge Cache</li>
-          <li data-action="open-settings">Settings…</li>
+        </li>
+        <li data-action="purge-cache">Purge Cache</li>
+        <li data-action="open-settings">Settings…</li>
         </ul>
     `;
     document.body.appendChild(menu);

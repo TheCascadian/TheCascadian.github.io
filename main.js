@@ -1,5 +1,32 @@
-
+// main.js
+/*
+ * Clean Commonwealth Cartographer
+ * Copyright (c) 2025 TheCascadian
+ *
+ * Licensed under the MIT License.
+ * See LICENSE.md for details.
+ */
 'use strict';
+
+const CONFIG = {
+    IMAGE_WIDTH: 4096,
+    IMAGE_HEIGHT: 4096,
+    TILE_SIZE: 24,
+    COORD_MIN_X: undefined,
+    COORD_MIN_Y: undefined,
+    PAN_PADDING: 192,
+    CENTER_THRESHOLD: 32,
+    MIN_SCALE: 0.215,
+    MAX_SCALE: 16.0,
+    ZOOM_STEP: 1.025,
+    HOVER_ANCHOR: 0.5,
+    FPS_SAMPLE_SIZE: 30,
+    TARGET_FPS: 60,
+    FPS_THRESHOLD: 5,
+    INITIAL_RENDER_MARGIN: 2,
+    RENDER_MARGIN_MIN: 1,
+    RENDER_MARGIN_MAX: 5
+};
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js', { scope: './' })
@@ -7,30 +34,20 @@ if ('serviceWorker' in navigator) {
         .catch(console.error);
 }
 
-class MapViewer {
-    /**
-     * @param {Object} opts
-     *   imageWidth: integer (pixels, required)
-     *   imageHeight: integer (pixels, required)
-     *   tileSize: integer (pixels per tile, required)
-     *   coordMinX: integer (lowest grid X, default: -floor(cols/2))
-     *   coordMinY: integer (lowest grid Y, default: -floor(rows/2))
-     */
-    constructor(opts) {
-        if (!opts) throw new Error('MapViewer requires options: {imageWidth, imageHeight, tileSize, ...}');
-        this._opts = opts;
+const tileLockManager = new TileLockManager();
 
+class MapViewer {
+    constructor(opts) {
+        const c = Object.assign({}, CONFIG, opts || {});
         this.CONFIG = {};
         this.configureGrid(
-            opts.imageWidth, opts.imageHeight, opts.tileSize,
-            opts.coordMinX, opts.coordMinY
+            c.IMAGE_WIDTH, c.IMAGE_HEIGHT, c.TILE_SIZE,
+            c.COORD_MIN_X, c.COORD_MIN_Y
         );
-
         this.OFFSET = {
             X: (this.CONFIG.CANVAS_SIZE - this.CONFIG.IMAGE_WIDTH) / 2,
-            Y: (this.CONFIG.CANVAS_SIZE - this.CONFIG.IMAGE_HEIGHT) / 2,
+            Y: (this.CONFIG.CANVAS_SIZE - this.CONFIG.IMAGE_HEIGHT) / 2
         };
-
         this.MAP_HASH = window.MAP_HASH || 'default';
         this.selected = new Set();
         this.groupStart = null;
@@ -41,14 +58,20 @@ class MapViewer {
         this.imageReady = false;
         this.needsRedraw = true;
         this.cachedGridPath = null;
-
-        this.PAN_PADDING = 192;        // panning area around edges, in pixels
-        this.CENTER_THRESHOLD = 32;    // px: when > this from center, snap to center
-        this.CENTER_LOCK_SCALE = this.CONFIG.MIN_SCALE; // pan lock at/below this scale
-
+        this.PAN_PADDING = c.PAN_PADDING;
+        this.CENTER_THRESHOLD = c.CENTER_THRESHOLD;
+        this.CENTER_LOCK_SCALE = this.CONFIG.MIN_SCALE;
         this.MASK_KEY = `mask-stable-v2:${this.CONFIG.GRID_COLS}x${this.CONFIG.GRID_ROWS}@${this.CONFIG.TILE_SIZE}`;
         this.db = null;
         this.hoveredTile = null;
+        this.fpsSamples = [];
+        this.fpsSampleSize = c.FPS_SAMPLE_SIZE;
+        this.lastFrameTime = performance.now();
+        this.renderMargin = c.INITIAL_RENDER_MARGIN;
+        this.minMargin = c.RENDER_MARGIN_MIN;
+        this.maxMargin = c.RENDER_MARGIN_MAX;
+        this.targetFPS = c.TARGET_FPS;
+        this.fpsThreshold = c.FPS_THRESHOLD;
         this.init();
     }
 
@@ -58,7 +81,6 @@ class MapViewer {
         const rows = Math.floor(imageHeight / tileSize);
         if (coordMinX === undefined) coordMinX = -Math.floor(cols / 2);
         if (coordMinY === undefined) coordMinY = -Math.floor(rows / 2);
-
         this.CONFIG = {
             CANVAS_SIZE: Math.max(imageWidth, imageHeight),
             IMAGE_WIDTH: imageWidth,
@@ -70,10 +92,10 @@ class MapViewer {
             COORD_MAX_X: coordMinX + cols - 1,
             COORD_MIN_Y: coordMinY,
             COORD_MAX_Y: coordMinY + rows - 1,
-            MIN_SCALE: 0.215, // measured to allow a full view of a standard 4096x4096 map image
-            MAX_SCALE: 16.0,
-            ZOOM_STEP: 1.025,
-            HOVER_ANCHOR: 0.5
+            MIN_SCALE: CONFIG.MIN_SCALE,
+            MAX_SCALE: CONFIG.MAX_SCALE,
+            ZOOM_STEP: CONFIG.ZOOM_STEP,
+            HOVER_ANCHOR: CONFIG.HOVER_ANCHOR
         };
     }
 
@@ -83,11 +105,53 @@ class MapViewer {
             y: this.CONFIG.COORD_MIN_Y + iy
         };
     }
+
     coordToIndex(tx, ty) {
         return {
             ix: tx - this.CONFIG.COORD_MIN_X,
             iy: ty - this.CONFIG.COORD_MIN_Y
         };
+    }
+
+    updateFPS() {
+        const now = performance.now();
+        const delta = now - this.lastFrameTime;
+        this.lastFrameTime = now;
+        const fps = 1000 / delta;
+        this.fpsSamples.push(fps);
+        if (this.fpsSamples.length > this.fpsSampleSize) {
+            this.fpsSamples.shift();
+        }
+        const avgFPS = this.fpsSamples.reduce((a, b) => a + b, 0) / this.fpsSamples.length;
+        return avgFPS;
+    }
+
+    adjustRenderMargin(avgFPS) {
+        if (avgFPS > this.targetFPS + this.fpsThreshold && this.renderMargin < this.maxMargin) {
+            this.renderMargin++;
+        } else if (avgFPS < this.targetFPS - this.fpsThreshold && this.renderMargin > this.minMargin) {
+            this.renderMargin--;
+        }
+    }
+
+    getVisibleTileBounds() {
+        const s = this.state.scale;
+        const dpr = this.dpr;
+        const T = this.CONFIG.TILE_SIZE;
+        const vw = this.canvas.width / dpr / s;
+        const vh = this.canvas.height / dpr / s;
+        const vx = this.state.panX;
+        const vy = this.state.panY;
+        const ixMinF = (vx - this.OFFSET.X) / T;
+        const iyMinF = (vy - this.OFFSET.Y) / T;
+        const ixMaxF = (vx + vw - this.OFFSET.X) / T;
+        const iyMaxF = (vy + vh - this.OFFSET.Y) / T;
+        const margin = this.renderMargin;
+        const ixMin = Math.max(0, Math.floor(ixMinF) - margin);
+        const iyMin = Math.max(0, Math.floor(iyMinF) - margin);
+        const ixMax = Math.min(this.CONFIG.GRID_COLS - 1, Math.ceil(ixMaxF) + margin);
+        const iyMax = Math.min(this.CONFIG.GRID_ROWS - 1, Math.ceil(iyMaxF) + margin);
+        return { ixMin, iyMin, ixMax, iyMax };
     }
 
     init() {
@@ -98,21 +162,19 @@ class MapViewer {
         this.setupEvents();
         this.setupServiceWorkerChannel();
         this.tryRevealUI();
-
         this.openIndexedDB(() => {
             this.tryLoadMaskFromCache(
                 () => this.tryRequestMask(),
                 () => { }
             );
         });
-
         const img = new Image();
         img.onload = () => {
             if (img.width !== this.CONFIG.IMAGE_WIDTH || img.height !== this.CONFIG.IMAGE_HEIGHT) {
                 this.configureGrid(img.width, img.height, this.CONFIG.TILE_SIZE, this.CONFIG.COORD_MIN_X, this.CONFIG.COORD_MIN_Y);
                 this.OFFSET = {
                     X: (this.CONFIG.CANVAS_SIZE - this.CONFIG.IMAGE_WIDTH) / 2,
-                    Y: (this.CONFIG.CANVAS_SIZE - this.CONFIG.IMAGE_HEIGHT) / 2,
+                    Y: (this.CONFIG.CANVAS_SIZE - this.CONFIG.IMAGE_HEIGHT) / 2
                 };
                 this.MASK_KEY = `mask-stable-v2:${this.CONFIG.GRID_COLS}x${this.CONFIG.GRID_ROWS}@${this.CONFIG.TILE_SIZE}`;
             }
@@ -129,7 +191,6 @@ class MapViewer {
             });
         };
         img.src = "./assets/mainmap.png";
-
         const btn = document.getElementById('purgeCacheButton');
         btn.addEventListener('click', () => this.purgeCache());
     }
@@ -196,69 +257,79 @@ class MapViewer {
     }
 
     setupEvents() {
-        // --- Disable pan at/below lock scale ---
-        this.canvas.addEventListener("pointerdown", (e) => {
+        const canvas = this.canvas;
+        canvas.addEventListener("pointerdown", (e) => {
             if (!this.imageReady || !this.maskReady) return;
-            if (this.state.panLocked) return; // Disallow drag if pan is locked
-            const t = this.screenToTile(e);
-            if (e.shiftKey || e.ctrlKey) {
-                this.groupActive = true;
-                this.groupStart = t;
-                this.groupCurrent = t;
-                this.needsRedraw = true;
-                this.requestDraw();
-            } else {
-                this.selected.clear();
-                if (this.validTile(t) && this.cellAllowed(t))
-                    this.selected.add(`${t.x},${t.y}`);
-                if (this.state.scale <= this.CENTER_LOCK_SCALE) {
-                    this.centerView();
-                }
-                this.updateInfo();
-                this.needsRedraw = true;
-                this.requestDraw();
-                // Only enable drag/pan if zoomed in above lock threshold
+            if (e.button === 1) {
                 if (this.state.scale > this.CENTER_LOCK_SCALE && !this.state.panLocked) {
                     this.state.dragging = true;
                     this.state.dragStart = { x: e.clientX, y: e.clientY };
                     this.state.panStart = { x: this.state.panX, y: this.state.panY };
-                } else {
-                    this.state.dragging = false;
                 }
+                e.preventDefault();
+            } else if (e.button === 0) {
+                const t = this.screenToTile(e);
+                if (tileLockManager.isTileLocked(t.x, t.y)) {
+                    alert('Tile is locked by ' + tileLockManager.isTileLocked(t.x, t.y).user);
+                    return;
+                }
+                if (e.shiftKey || e.ctrlKey) {
+                    if (!this.groupActive) {
+                        this.groupActive = true;
+                        this.groupStart = t;
+                    }
+                    this.groupCurrent = t;
+                    this.needsRedraw = true;
+                    this.requestDraw();
+                } else {
+                    if (!this.groupActive) this.selected.clear();
+                    if (this.validTile(t) && this.cellAllowed(t))
+                        this.selected.add(`${t.x},${t.y}`);
+                    if (this.state.scale <= this.CENTER_LOCK_SCALE) {
+                        this.centerView();
+                    }
+                    this.updateInfo();
+                    this.needsRedraw = true;
+                    this.requestDraw();
+                }
+                e.preventDefault();
+            } else if (e.button === 2) {
             }
-            e.preventDefault();
         });
 
-        window.addEventListener("pointermove", (e) => {
+        canvas.addEventListener("pointermove", (e) => {
             if (!this.imageReady || !this.maskReady) return;
-            const hover = this.screenToTile(e);
-            let changed = false;
-            if (!this.hoveredTile || this.hoveredTile.x !== hover.x || this.hoveredTile.y !== hover.y) {
-                this.hoveredTile = hover;
-                changed = true;
-            }
-            document.getElementById("tileDisplay").textContent =
-                this.validTile(hover) ? `${hover.x},${hover.y}` : "-";
-            if (this.groupActive) {
-                this.groupCurrent = hover;
-                changed = true;
-            } else if (this.state.dragging && this.state.scale > this.CENTER_LOCK_SCALE) {
+            if (this.state.dragging && e.buttons === 4) {
                 const dx = (e.clientX - this.state.dragStart.x) / this.state.scale;
                 const dy = (e.clientY - this.state.dragStart.y) / this.state.scale;
                 this.state.panX = this.state.panStart.x - dx;
                 this.state.panY = this.state.panStart.y - dy;
                 this.clampPan();
-                changed = true;
-            }
-            if (changed) {
                 this.needsRedraw = true;
                 this.requestDraw();
+            } else {
+                const hover = this.screenToTile(e);
+                if (!this.hoveredTile || this.hoveredTile.x !== hover.x || this.hoveredTile.y !== hover.y) {
+                    this.hoveredTile = hover;
+                    document.getElementById("tileDisplay").textContent =
+                        this.validTile(hover) ? `${hover.x},${hover.y}` : "-";
+                    this.needsRedraw = true;
+                    this.requestDraw();
+                }
+                if (this.groupActive && (e.buttons & 1)) {
+                    this.groupCurrent = this.screenToTile(e);
+                    this.needsRedraw = true;
+                    this.requestDraw();
+                }
             }
         });
 
         window.addEventListener("pointerup", (e) => {
             if (!this.imageReady || !this.maskReady) return;
-            if (this.groupActive && this.groupStart && this.groupCurrent) {
+            if (e.button === 1) {
+                this.state.dragging = false;
+            }
+            if (e.button === 0 && this.groupActive && this.groupStart && this.groupCurrent) {
                 const a = this.groupStart, b = this.groupCurrent;
                 const x0 = Math.min(a.x, b.x), x1 = Math.max(a.x, b.x);
                 const y0 = Math.min(a.y, b.y), y1 = Math.max(a.y, b.y);
@@ -266,56 +337,11 @@ class MapViewer {
                     for (let y = y0; y <= y1; y++)
                         if (this.validTile({ x, y }) && this.cellAllowed({ x, y }))
                             this.selected.add(`${x},${y}`);
-                this.groupActive = false;
-                this.groupStart = null;
-                this.groupCurrent = null;
                 this.needsRedraw = true;
                 this.requestDraw();
                 this.updateInfo();
             }
-            this.state.dragging = false;
         });
-
-        // --- Clamp scale, block zoom out, instantly enable/disable pan as needed ---
-        this.canvas.addEventListener("wheel", (e) => {
-            if (!this.imageReady || !this.maskReady) return;
-
-            // Zoom factor
-            const factor = e.deltaY < 0 ? this.CONFIG.ZOOM_STEP : 1 / this.CONFIG.ZOOM_STEP;
-            let newScale = Math.max(this.CONFIG.MIN_SCALE, Math.min(this.state.scale * factor, this.CONFIG.MAX_SCALE));
-            if (newScale === this.state.scale) {
-                e.preventDefault();
-                return;
-            }
-
-            // Cursor-anchored zoom: compute world coordinates under mouse before/after
-            const rect = this.canvas.getBoundingClientRect();
-            const mx = e.clientX - rect.left;
-            const my = e.clientY - rect.top;
-
-            const oldScale = this.state.scale;
-            const wx = (mx * this.dpr) / oldScale + this.state.panX;
-            const wy = (my * this.dpr) / oldScale + this.state.panY;
-
-            this.state.scale = newScale;
-
-            // Calculate new pan to keep mouse position fixed
-            this.state.panX = wx - (mx * this.dpr) / newScale;
-            this.state.panY = wy - (my * this.dpr) / newScale;
-
-            // If at or below lock scale, focus-center (selected tile if any)
-            if (this.state.scale <= this.CENTER_LOCK_SCALE) {
-                this.centerView();
-            } else {
-                this.clampPan();
-            }
-
-            this.checkPanLock();
-            this.updateUI();
-            this.needsRedraw = true;
-            this.requestDraw();
-            e.preventDefault();
-        }, { passive: false });
 
         window.addEventListener("resize", () => {
             this.resizeCanvas();
@@ -325,7 +351,6 @@ class MapViewer {
     }
 
     getFocusWorld() {
-        // If at least one tile is selected use its centre…
         if (this.selected && this.selected.size) {
             const [tx, ty] = this.selected.values().next().value.split(',').map(Number);
             const { ix, iy } = this.coordToIndex(tx, ty);
@@ -335,7 +360,6 @@ class MapViewer {
                 y: this.OFFSET.Y + (iy + 0.5) * T
             };
         }
-        // …otherwise default to the image’s geometric centre
         return {
             x: this.OFFSET.X + this.CONFIG.IMAGE_WIDTH * 0.5,
             y: this.OFFSET.Y + this.CONFIG.IMAGE_HEIGHT * 0.5
@@ -365,6 +389,7 @@ class MapViewer {
         const { ix, iy } = this.coordToIndex(t.x, t.y);
         if (ix < 0 || ix >= this.CONFIG.GRID_COLS || iy < 0 || iy >= this.CONFIG.GRID_ROWS) return false;
         const idx = iy * this.CONFIG.GRID_COLS + ix;
+        if (tileLockManager.isTileLocked(t.x, t.y)) return false;
         return this.tileMask[idx] === 1;
     }
 
@@ -378,34 +403,27 @@ class MapViewer {
     checkPanLock() {
         const wasLocked = this.state.panLocked;
         const shouldLock = this.state.scale <= this.CENTER_LOCK_SCALE;
-
         if (shouldLock && !wasLocked) {
             this.state.panLocked = true;
             this.centerView();
             this.state.dragging = false;
         } else if (!shouldLock && wasLocked) {
             this.state.panLocked = false;
-            // Don't center when unlocking - maintain current view
         }
     }
 
     clampPan() {
         const vw = this.canvas.width / this.dpr / this.state.scale;
         const vh = this.canvas.height / this.dpr / this.state.scale;
-
-        // Force center when at/below lock scale
         if (this.state.scale <= this.CENTER_LOCK_SCALE) {
             this.centerView();
             return;
         }
-        
-        // Normal clamping for higher zoom levels
         const pad = this.PAN_PADDING;
         const left = -pad + this.OFFSET.X;
         const right = this.CONFIG.IMAGE_WIDTH - vw + pad + this.OFFSET.X;
         const top = -pad + this.OFFSET.Y;
         const bottom = this.CONFIG.IMAGE_HEIGHT - vh + pad + this.OFFSET.Y;
-
         this.state.panX = Math.max(left, Math.min(this.state.panX, right));
         this.state.panY = Math.max(top, Math.min(this.state.panY, bottom));
     }
@@ -426,6 +444,7 @@ class MapViewer {
         this.needsRedraw = true;
         this.requestDraw();
     }
+
     clearSelection() {
         this.selected.clear();
         this.updateInfo();
@@ -547,6 +566,9 @@ class MapViewer {
         const ctx = this.ctx, s = this.state.scale, dpr = this.dpr;
         const T = this.CONFIG.TILE_SIZE, offX = this.OFFSET.X, offY = this.OFFSET.Y;
         const cols = this.CONFIG.GRID_COLS, rows = this.CONFIG.GRID_ROWS, mask = this.tileMask;
+        const avgFPS = this.updateFPS();
+        this.adjustRenderMargin(avgFPS);
+        const { ixMin, iyMin, ixMax, iyMax } = this.getVisibleTileBounds();
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -559,43 +581,53 @@ class MapViewer {
 
         ctx.drawImage(this.image, offX, offY, this.CONFIG.IMAGE_WIDTH, this.CONFIG.IMAGE_HEIGHT);
 
-        // Phase 1: Grid
         ctx.save();
         ctx.strokeStyle = 'rgba(255,255,255,0.15)';
         ctx.lineWidth = 1 / (s * dpr);
-        ctx.stroke(this.cachedGridPath);
+
+        const gridPath = new Path2D();
+        for (let iy = iyMin; iy <= iyMax; iy++) {
+            for (let ix = ixMin; ix <= ixMax; ix++) {
+                if (!this.cellAllowed({ x: this.CONFIG.COORD_MIN_X + ix, y: this.CONFIG.COORD_MIN_Y + iy })) continue;
+                gridPath.rect(offX + ix * T, offY + iy * T, T, T);
+            }
+        }
+        ctx.stroke(gridPath);
         ctx.restore();
 
-        // Phase 2: Mask boundary
         ctx.save();
         ctx.strokeStyle = '#47ff55';
         ctx.lineWidth = 3 / (s * dpr);
         ctx.beginPath();
-        for (let iy = 0; iy < rows; iy++) {
-            for (let ix = 0; ix < cols; ix++) {
+
+        for (let iy = iyMin; iy <= iyMax; iy++) {
+            for (let ix = ixMin; ix <= ixMax; ix++) {
                 if (mask[iy * cols + ix] !== 1) continue;
                 const px = offX + ix * T, py = offY + iy * T;
-                if (iy === 0 || mask[(iy - 1) * cols + ix] !== 1) { ctx.moveTo(px, py); ctx.lineTo(px + T, py); }
-                if (ix === cols - 1 || mask[iy * cols + (ix + 1)] !== 1) { ctx.moveTo(px + T, py); ctx.lineTo(px + T, py + T); }
-                if (iy === rows - 1 || mask[(iy + 1) * cols + ix] !== 1) { ctx.moveTo(px + T, py + T); ctx.lineTo(px, py + T); }
-                if (ix === 0 || mask[iy * cols + (ix - 1)] !== 1) { ctx.moveTo(px, py + T); ctx.lineTo(px, py); }
+                const up = iy === 0 || mask[(iy - 1) * cols + ix] !== 1;
+                const right = ix === cols - 1 || mask[iy * cols + (ix + 1)] !== 1;
+                const down = iy === rows - 1 || mask[(iy + 1) * cols + ix] !== 1;
+                const left = ix === 0 || mask[iy * cols + (ix - 1)] !== 1;
+                if (up) { ctx.moveTo(px, py); ctx.lineTo(px + T, py); }
+                if (right) { ctx.moveTo(px + T, py); ctx.lineTo(px + T, py + T); }
+                if (down) { ctx.moveTo(px + T, py + T); ctx.lineTo(px, py + T); }
+                if (left) { ctx.moveTo(px, py + T); ctx.lineTo(px, py); }
             }
         }
         ctx.stroke();
         ctx.restore();
 
-        // Phase 3: Selected tiles
         ctx.save();
         ctx.fillStyle = 'rgba(54,162,235,0.4)';
         this.selected.forEach(key => {
             const [tx, ty] = key.split(',').map(Number);
-            if (!this.cellAllowed({ x: tx, y: ty })) return;
             const { ix, iy } = this.coordToIndex(tx, ty);
+            if (ix < ixMin || ix > ixMax || iy < iyMin || iy > iyMax) return;
+            if (!this.cellAllowed({ x: tx, y: ty })) return;
             ctx.fillRect(offX + ix * T, offY + iy * T, T, T);
         });
         ctx.restore();
 
-        // Phase 4: Group selection
         if (this.groupActive && this.groupStart && this.groupCurrent) {
             const a = this.groupStart, b = this.groupCurrent;
             const x0 = Math.max(Math.min(a.x, b.x), this.CONFIG.COORD_MIN_X), x1 = Math.min(Math.max(a.x, b.x), this.CONFIG.COORD_MAX_X);
@@ -614,16 +646,17 @@ class MapViewer {
             }
         }
 
-        // Phase 5: Hover highlight
         if (this.hoveredTile && this.validTile(this.hoveredTile) && this.cellAllowed(this.hoveredTile)) {
             const { ix, iy } = this.coordToIndex(this.hoveredTile.x, this.hoveredTile.y);
-            const px = offX + ix * T, py = offY + iy * T;
-            ctx.save();
-            ctx.strokeStyle = 'rgba(255,205,86,0.8)';
-            ctx.lineWidth = 2 / (s * dpr);
-            ctx.setLineDash([2 / (s * dpr), 2 / (s * dpr)]);
-            ctx.strokeRect(px, py, T, T);
-            ctx.restore();
+            if (ix >= ixMin && ix <= ixMax && iy >= iyMin && iy <= iyMax) {
+                const px = offX + ix * T, py = offY + iy * T;
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255,205,86,0.8)';
+                ctx.lineWidth = 2 / (s * dpr);
+                ctx.setLineDash([2 / (s * dpr), 2 / (s * dpr)]);
+                ctx.strokeRect(px, py, T, T);
+                ctx.restore();
+            }
         }
 
         ctx.restore();
@@ -642,10 +675,44 @@ class MapViewer {
     }
 }
 
-// Example usage for a 4096x4096 image, 24px tiles, grid centered on (0,0):
-const viewer = new MapViewer({
-    imageWidth: 4096,
-    imageHeight: 4096,
-    tileSize: 24
-});
+const viewer = new MapViewer({});
 window.viewer = viewer;
+
+// Group claim action for context menu (example)
+function claimGroupSelectedTiles() {
+    if (!viewer.selected.size) return;
+    const user = prompt('Enter your name to claim selected tiles:');
+    if (!user) return;
+    const tiles = Array.from(viewer.selected).map(k => {
+        const [x, y] = k.split(',').map(Number);
+        return { x, y };
+    });
+    tileLockManager.lockTiles(tiles, user);
+    viewer.needsRedraw = true;
+    viewer.requestDraw();
+}
+
+// Export locks as JSON for sharing
+function exportTileLocks() {
+    const json = tileLockManager.exportLocksJSON();
+    navigator.clipboard.writeText(json);
+    alert('Tile locks exported to clipboard.');
+}
+
+// Import locks from JSON
+function importTileLocks() {
+    const json = prompt('Paste tile lock JSON:');
+    if (!json) return;
+    try {
+        tileLockManager.importLocksJSON(json);
+        viewer.needsRedraw = true;
+        viewer.requestDraw();
+        alert('Locks imported.');
+    } catch (e) {
+        alert('Failed to import: ' + e.message);
+    }
+}
+
+window.claimGroupSelectedTiles = claimGroupSelectedTiles;
+window.exportTileLocks = exportTileLocks;
+window.importTileLocks = importTileLocks;

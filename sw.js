@@ -1,3 +1,11 @@
+/*
+ * Clean Commonwealth Cartographer
+ * Copyright (c) 2025 TheCascadian
+ *
+ * Licensed under the MIT License.
+ * See LICENSE.md for details.
+ */
+
 'use strict';
 
 const CACHE = 'map-viewer-v3';

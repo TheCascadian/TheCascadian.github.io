@@ -1,3 +1,12 @@
+/*
+ * Clean Commonwealth Cartographer
+ * Copyright © 2025 TheCascadian
+ *
+ * Licensed under the MIT License.
+ * See LICENSE.md in the project root for full license text.
+ *
+ * This project contains third-party disclaimers regarding Fallout 4 assets and fonts.
+ */
 :root{--color-bg:#111510;--color-bg-alt:#151f12;--color-bg-terminal:#131a13;--color-panel:#1a2e18;--color-text:#baf795;--color-accent:#47ff55;--color-accent-alt:#0fe7b1;--color-muted:#2d422d;--color-error:#ff3752;--color-highlight:#e5f74a;--font-heading:'Overseer','Monofonto',Consolas,monospace;--font-base:'Monofonto','Courier New',Courier,monospace;--font-size:15px;--font-size-lg:18px;--font-size-huge:50px;--line-height:1.45;--border-radius:4px;--border-width:1.5px;--border-color:#47ff55;--gap-xs:4px;--gap-s:10px;--gap-m:18px;--gap-l:32px;--z-header:10;--z-panel:8;--z-overlay:30;--input-bg:#131a13;--input-border:#47ff55}
 *{box-sizing:border-box;margin:0;padding:0}
 body,html{width:100vw;height:100vh;font-family:var(--font-base);background:var(--color-bg);color:var(--color-text);font-size:var(--font-size);line-height:var(--line-height);overflow:hidden;letter-spacing:.04em}
