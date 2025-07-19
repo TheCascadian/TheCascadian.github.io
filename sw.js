@@ -15,11 +15,10 @@ const ASSETS = [
     './assets/mainmap.png',
     './assets/mainmask.png',
     './contextMenu.js',
-    './debug.js',
     './main.js',
     './sw.js',
-    './tileLockManager.js',
-    './.version'
+    './tileLockManager.js'
+    // Do not include './debug.js' or './.version' unless always present!
 ];
 
 // Install: precache core assets
