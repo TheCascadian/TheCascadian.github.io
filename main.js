@@ -1,4 +1,3 @@
-// main.js
 /*
  * Clean Commonwealth Cartographer
  * Copyright (c) 2025 TheCascadian
@@ -7,6 +6,9 @@
  * See LICENSE.md for details.
  */
 'use strict';
+
+// Correct ES module import for GitHub Pages
+import TileLockManager from './tileLockManager.js';
 
 const CONFIG = {
     IMAGE_WIDTH: 4096,

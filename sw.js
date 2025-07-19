@@ -17,7 +17,9 @@ const ASSETS = [
     './contextMenu.js',
     './debug.js',
     './main.js',
-    './sw.js'
+    './sw.js',
+    './tileLockManager.js',
+    './.version'
 ];
 
 // Install: precache core assets
@@ -45,6 +47,7 @@ self.addEventListener('fetch', e => {
             try {
                 // Always try network first
                 const netRes = await fetch(e.request);
+                if (new URL(e.request.url).origin !== location.origin) return;
                 // Only cache non-cache-busted GET requests
                 if (e.request.method === 'GET' && !isCacheBusted) {
                     const cache = await caches.open(CACHE);
