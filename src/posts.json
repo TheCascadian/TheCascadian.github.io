@@ -1,0 +1,16 @@
+[
+    {
+        "id": "minimalism-in-code",
+        "title": "The Art of Minimalist Code",
+        "date": "Jan 22, 2026",
+        "excerpt": "Why less is usually more when building for the web.",
+        "content": "Full article content goes here. You can use HTML tags like <p> or <b>."
+    },
+    {
+        "id": "github-pages-hosting",
+        "title": "Hosting for Free",
+        "date": "Jan 20, 2026",
+        "excerpt": "A guide to using GitHub Pages for your portfolio.",
+        "content": "GitHub Pages is an incredible service for static sites..."
+    }
+]

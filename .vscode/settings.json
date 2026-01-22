@@ -1,0 +1,125 @@
+{
+  "editor.fontFamily": "'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6,
+  "editor.letterSpacing": 0.3,
+
+  "editor.renderWhitespace": "none",
+  "editor.renderControlCharacters": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+
+  "editor.minimap.enabled": true,
+
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "off",
+  "editor.cursorWidth": 2,
+
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 110,
+  "editor.scrollBeyondLastLine": false,
+  "editor.smoothScrolling": false,
+
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.indentation": true,
+
+  "editor.inlineSuggest.enabled": true,
+  "editor.parameterHints.enabled": true,
+  "editor.hover.delay": 400,
+  "editor.lightbulb.enabled": "off",
+  "editor.quickSuggestionsDelay": 250,
+
+  "editor.matchBrackets": "near",
+  "editor.foldingHighlight": false,
+  "editor.selectionHighlight": true,
+  "editor.occurrencesHighlight": "singleFile",
+  "editor.stickyScroll.enabled": false,
+
+  "editor.codeLens": false,
+  "editor.inlayHints.enabled": "off",
+
+  "npm.packageManager": "npm",
+  "eslint.workingDirectories": [
+    { "directory": "electron-app", "changeProcessCWD": true }
+  ],
+
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.editor.labelFormat": "short",
+  "workbench.editor.decorations.badges": false,
+  "workbench.editor.decorations.colors": true,
+
+  "workbench.activityBar.location": "default",
+  "workbench.sideBar.location": "left",
+  "workbench.statusBar.visible": true,
+
+  "workbench.tips.enabled": false,
+  "workbench.startupEditor": "none",
+  "workbench.reduceMotion": "on",
+
+  "workbench.list.smoothScrolling": false,
+  "workbench.tree.indent": 12,
+
+  "explorer.compactFolders": false,
+  "explorer.openEditors.visible": 1,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.sortOrder": "type",
+
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1800,
+  "files.trimTrailingWhitespace": false,
+  "files.insertFinalNewline": false,
+
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.cache/**": true
+  },
+
+  "search.followSymlinks": false,
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true,
+
+  "breadcrumbs.enabled": false,
+
+  "problems.decorations.enabled": true,
+  "problems.showCurrentInStatus": true,
+
+  "debug.toolBarLocation": "hidden",
+  "debug.showBreakpointsInOverviewRuler": false,
+
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "prettier.printWidth": 110,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "prettier.semi": true,
+  "prettier.singleQuote": true,
+
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.tsserver.maxTsServerMemory": 4096,
+
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  "editor.accessibilitySupport": "off",
+  "window.zoomLevel": 0,
+
+  "editor.dragAndDrop": true,
+  "workbench.editor.splitOnDragAndDrop": true,
+  "editor.mouseWheelZoom": false,
+
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.smoothScrolling": false,
+  "terminal.integrated.tabs.enabled": true,
+  "terminal.integrated.minimumContrastRatio": 4.5
+}
