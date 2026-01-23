@@ -23,10 +23,7 @@
     const rect = resultsEl.getBoundingClientRect();
     const height = rect.height;
 
-    root.style.setProperty(
-      '--pagefind-results-height',
-      height > 0 ? `${height}px` : '0px'
-    );
+    root.style.setProperty('--pagefind-results-height', height > 0 ? `${height}px` : '0px');
   }
 
   function attachObserver() {

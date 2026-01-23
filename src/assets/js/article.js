@@ -36,7 +36,7 @@
       const a = document.createElement('a');
       a.href = '#' + id;
       a.textContent = heading.textContent;
-      
+
       if (heading.tagName === 'H3') {
         li.style.marginLeft = '20px';
       }
@@ -46,7 +46,7 @@
     });
 
     const tocLinks = tocContainer.querySelectorAll('a');
-    tocLinks.forEach(link => {
+    tocLinks.forEach((link) => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').substring(1);

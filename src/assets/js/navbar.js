@@ -40,7 +40,7 @@
 
   function updateContentPadding(dockClass) {
     if (!contentContainer) return;
-    
+
     const navRect = nav.getBoundingClientRect();
 
     contentContainer.classList.remove('navbar-top', 'navbar-bottom', 'navbar-left', 'navbar-right');

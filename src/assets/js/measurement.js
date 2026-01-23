@@ -85,17 +85,17 @@
     let hash = 0;
     const str = el.tagName + (el.id || '') + (el.className || '');
     for (let i = 0; i < str.length; i++) {
-      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash = (hash << 5) - hash + str.charCodeAt(i);
       hash |= 0;
     }
     return `hsla(${Math.abs(hash) % 360}, 90%, 55%, 0.85)`;
   }
 
   function formatValue(px, axis) {
-    if (RULER_UNIT === 'vw') return `${(px / window.innerWidth * 100).toFixed(1)}vw`;
+    if (RULER_UNIT === 'vw') return `${((px / window.innerWidth) * 100).toFixed(1)}vw`;
     if (RULER_UNIT === '%') {
       const base = axis === 'x' ? window.innerWidth : window.innerHeight;
-      return `${(px / base * 100).toFixed(1)}%`;
+      return `${((px / base) * 100).toFixed(1)}%`;
     }
     return `${Math.round(px)}px`;
   }
@@ -141,25 +141,9 @@
 
       const color = colorForElement(el);
 
-      drawRuler(
-        r.left,
-        r.top - 6,
-        r.right,
-        r.top - 6,
-        formatValue(r.width, 'x'),
-        color,
-        'x'
-      );
+      drawRuler(r.left, r.top - 6, r.right, r.top - 6, formatValue(r.width, 'x'), color, 'x');
 
-      drawRuler(
-        r.left - 6,
-        r.top,
-        r.left - 6,
-        r.bottom,
-        formatValue(r.height, 'y'),
-        color,
-        'y'
-      );
+      drawRuler(r.left - 6, r.top, r.left - 6, r.bottom, formatValue(r.height, 'y'), color, 'y');
     }
   }
 
