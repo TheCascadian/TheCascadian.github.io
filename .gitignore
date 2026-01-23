@@ -1,3 +1,5 @@
 .venv/
 .vscode/
 .script/
+.github/
+src/pagefind/
