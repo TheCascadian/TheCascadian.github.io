@@ -1,143 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - All Articles</title>
-
-    <meta name="description" content="Browse all blog articles">
-    <meta property="og:title" content="Blog - All Articles">
-    <meta property="og:description" content="Browse all blog articles">
-    <meta property="og:type" content="website">
-
-    <link href="./pagefind/pagefind-ui.css" rel="stylesheet">
-    <script src="./pagefind/pagefind-ui.js"></script>
-    <link href="./assets/css/pagefind-override.css" rel="stylesheet">
-    <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "Blog - Beta 001",
-        "description": "A technical blog exploring modern web development and GitHub Pages features.",
-        "url": "https://TheCascadian.github.io/",
-        "author": {
-            "@type": "Person",
-            "name": "Your Name",
-            "url": "https://TheCascadian.github.io/about"
-        },
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://TheCascadian.github.io/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
+    <title>My Web Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
         }
-        }
-    </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="./assets/css/fonts.css" />
-    <link rel="stylesheet" href="./assets/css/root.css" />
-    <link rel="stylesheet" href="./assets/css/blog.css" />
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+    </style>
 </head>
 
 <body>
-
-    <div id="overlay-top" class="dock-overlay"></div>
-    <div id="overlay-bottom" class="dock-overlay"></div>
-    <div id="overlay-left" class="dock-overlay"></div>
-    <div id="overlay-right" class="dock-overlay"></div>
-
-    <div id="nav-container" class="dock-top">
-        <ul>
-            <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
-        </ul>
-        <!--div id="search-container"></div>-->
-        <div id="pagefind-search" class="blog-search"></div>
-
-        <div id="drag-handle" aria-label="Drag handle" role="button">
-            <i class="fa-solid fa-grip-lines"></i>
-        </div>
-    </div>
-
-    <div id="content" class="container">
-        <div class="blog-container">
-
-
-            <div class="blog-grid">
-
-                <a href="articles/sample-article-1.html" class="blog-card">
-                    <img src="https://placehold.co/600x300/111111/FFFFFF?text=Placeholder" alt="Placeholder image">
-                    <div class="blog-card-content">
-                        <div class="blog-card-meta">
-                            <span><i class="fa fa-calendar"></i> Jan 22, 2026</span>
-                            <span><i class="fa fa-clock"></i> 8 min read</span>
-                        </div>
-                        <h2 class="blog-card-title">Getting Started with GitHub Pages</h2>
-                        <p class="blog-card-excerpt">Learn how to set up and deploy your first static website using
-                            GitHub Pages.</p>
-                        <div class="blog-card-tags">
-                            <span class="blog-tag">GitHub</span>
-                            <span class="blog-tag">Web Development</span>
-                            <span class="blog-tag">Tutorial</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="articles/sample-article-2.html" class="blog-card">
-                    <img src="https://placehold.co/600x300/111111/FFFFFF?text=Placeholder" alt="Placeholder image">
-                    <div class="blog-card-content">
-                        <div class="blog-card-meta">
-                            <span><i class="fa fa-calendar"></i> Jan 20, 2026</span>
-                            <span><i class="fa fa-clock"></i> 12 min read</span>
-                        </div>
-                        <h2 class="blog-card-title">Advanced CSS in Modern Layouts</h2>
-                        <p class="blog-card-excerpt">Discover modern CSS features including Grid, Flexbox, and
-                            custom properties.</p>
-                        <div class="blog-card-tags">
-                            <span class="blog-tag">CSS</span>
-                            <span class="blog-tag">Design</span>
-                            <span class="blog-tag">Advanced</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="articles/sample-article-3.html" class="blog-card">
-                    <img src="https://placehold.co/600x300/111111/FFFFFF?text=Placeholder" alt="Placeholder image">
-                    <div class="blog-card-content">
-                        <div class="blog-card-meta">
-                            <span><i class="fa fa-calendar"></i> Jan 18, 2026</span>
-                            <span><i class="fa fa-clock"></i> 10 min read</span>
-                        </div>
-                        <h2 class="blog-card-title">JavaScript Performance Optimization</h2>
-                        <p class="blog-card-excerpt">Discover proven techniques to optimize JavaScript performance in
-                            your web applications.</p>
-                        <div class="blog-card-tags">
-                            <span class="blog-tag">JavaScript</span>
-                            <span class="blog-tag">Performance</span>
-                            <span class="blog-tag">Best Practices</span>
-                        </div>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-    </div>
-    <script src="./assets/js/navbar.js"></script>
-    <script src="./assets/js/dynamics.js"></script>
-    <!--script src="./assets/js/measurement.js"></script-->
-
-    <script>
-        if (window.PagefindUI) {
-            new PagefindUI({
-                element: '#pagefind-search',
-                showSubResults: true,
-                showImages: false,
-                excerptLength: 15,
-                resetStyles: false
-            });
-        }
-    </script>
-
+    <h1>Welcome to My Web Page</h1>
+    <p>This is a simple web page created as an example.</p>
+    <iframe src="https://claude.site/public/artifacts/1fa2bc65-22fe-4891-a882-43bd33509830/embed" title="Claude Artifact"
+        width="100%" height="600" frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
 </body>
 
 </html>

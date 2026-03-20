@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://TheCascadian.github.io/sitemap.xml

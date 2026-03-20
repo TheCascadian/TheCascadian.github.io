@@ -2,4 +2,11 @@
 .vscode/
 .script/
 .github/instructions/
-src/pagefind/
+src/pagefind/fragment/
+src/pagefind/index/
+src/pagefind/*.pagefind
+src/pagefind/*.pf_meta
+.github/skills/
+node_modules/
+src/
+.private/
