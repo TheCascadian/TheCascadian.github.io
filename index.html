@@ -1,482 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factory Automation Portfolio</title>
-    <style>
-        :root {
-            --bg-color: #2b2b2b;
-            --zone-bg: #444444;
-            --zone-border: #666666;
-            --station-bg: #888888;
-            --station-hover: #aaaaaa;
-            --accent: #00ADB5; /* Teal */
-            --text-light: #ffffff;
-            --text-dark: #222222;
-            --conveyor: #333333;
-            --conveyor-belt: #111111;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheCascadian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #ffcdcd;
+      --surface:      #ffffff;
+      --border:       #999999;
+      --border-hover: #727272;
+      --green-dark:   #2c5f4a;
+      --green-mid:    #3a8a64;
+      --green-light:  #7ec9a0;
+      --green-mist:   #c5e3d1;
+      --text-primary: #1b2e24;
+      --text-sub:     #4d6b5b;
+      --text-muted:   #63746a;
+      --radius:       5px;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-        }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 60px 20px 96px;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-            width: 100%;
-            max-width: 1000px;
-        }
+    /* paper grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='https://avatars.githubusercontent.com/u/119545132?v=4' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+      pointer-events: none;
+      z-index: 9999;
+    }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
+    .container {
+      max-width: 540px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
 
-        p.subtitle {
-            color: var(--station-bg);
-            font-size: 0.9rem;
-        }
+    /* ---- ENTRANCE ANIMATION ---- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.55s ease forwards;
+    }
+    .fade-up:nth-child(1) { animation-delay: 0.05s; }
+    .fade-up:nth-child(2) { animation-delay: 0.12s; }
+    .fade-up:nth-child(3) { animation-delay: 0.19s; }
+    .fade-up:nth-child(4) { animation-delay: 0.26s; }
+    .fade-up:nth-child(5) { animation-delay: 0.33s; }
+    .fade-up:nth-child(6) { animation-delay: 0.40s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* SVG Factory Styles */
-        .factory-container {
-            width: 100%;
-            max-width: 1000px;
-            background-color: #333;
-            border: 2px solid var(--zone-border);
-            border-radius: 4px;
-            overflow: hidden;
-        }
+    /* ---- HEADER ---- */
+    .header { text-align: center; margin-bottom: 48px; }
 
-        svg {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
+    .avatar-wrap {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 22px;
+    }
 
-        .zone-rect {
-            fill: var(--zone-bg);
-            stroke: var(--zone-border);
-            stroke-width: 2;
-            stroke-dasharray: 8 4;
-        }
+    .avatar-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid var(--green-light);
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 5.5px var(--border);
+      background: linear-gradient(145deg, var(--green-mist), #e8f4ee);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-        .zone-label {
-            fill: #cccccc;
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+    /* Set img[src] to your avatar URL; initials auto-hide on load */
+    .avatar-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
 
-        .station rect {
-            fill: var(--station-bg);
-            stroke: var(--text-dark);
-            stroke-width: 2;
-            transition: fill 0.2s ease, stroke 0.2s ease;
-            cursor: pointer;
-        }
+    .avatar-initials {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--green-dark);
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
 
-        .station:hover rect, .station:focus rect {
-            fill: var(--station-hover);
-            stroke: var(--accent);
-            outline: none;
-        }
+    .name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 2.1rem;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
 
-        .station text {
-            fill: var(--text-dark);
-            font-size: 14px;
-            font-weight: 600;
-            pointer-events: none;
-            text-anchor: middle;
-            dominant-baseline: middle;
-        }
+    .location {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .location-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--green-light);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
-        /* Conveyor Belt Animation */
-        .conveyor-path {
-            fill: none;
-            stroke: var(--conveyor-belt);
-            stroke-width: 12;
-        }
+    .bio {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-sub);
+      max-width: 380px;
+      margin: 0 auto;
+    }
 
-        .conveyor-dashes {
-            fill: none;
-            stroke: var(--station-bg);
-            stroke-width: 8;
-            stroke-dasharray: 10 10;
-            animation: moveConveyor 1.5s linear infinite;
-        }
+    /* ---- DIVIDER ---- */
+    .divider {
+      width: 36px;
+      height: 2px;
+      background: var(--green-mist);
+      border-radius: 2px;
+      margin: 40px auto;
+    }
 
-        @keyframes moveConveyor {
-            from { stroke-dashoffset: 20; }
-            to { stroke-dashoffset: 0; }
-        }
+    /* ---- CATEGORY ---- */
+    .category { margin-bottom: 32px; }
 
-        /* Modal Styles */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-        }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
 
-        .modal-backdrop.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+    .category-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
 
-        .modal {
-            background-color: #e0e0e0;
-            color: var(--text-dark);
-            width: 90%;
-            max-width: 500px;
-            border-radius: 4px;
-            padding: 2rem;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            border-top: 6px solid var(--accent);
-        }
+    .category-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
 
-        .modal-backdrop.active .modal {
-            transform: translateY(0);
-        }
+    /* ---- LINK CARDS ---- */
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      text-decoration: none;
+      color: inherit;
+      margin-bottom: 7px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
+    /* left-bar reveal on hover */
+    .link-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--green-light), var(--green-dark));
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform 0.22s ease;
+      border-radius: 0 2px 2px 0;
+    }
 
-        .close-btn:hover {
-            color: var(--text-dark);
-        }
+    .link-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 4px 22px rgba(44, 95, 74, 0.10);
+      transform: translateY(-1px);
+    }
 
-        .modal h2 {
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-        }
+    .link-card:hover::before { transform: scaleY(1); }
 
-        .modal p.desc {
-            margin-bottom: 1.5rem;
-            line-height: 1.4;
-            color: #444;
-        }
+    .link-icon {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
+    .link-icon img {
+      width: 22px;
+      height: 22px;
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
 
-        .tech-tag {
-            background-color: var(--zone-border);
-            color: var(--text-light);
-            padding: 0.25rem 0.5rem;
-            border-radius: 2px;
-            font-size: 0.8rem;
-            font-family: monospace;
-        }
+    .link-card:hover .link-icon img { opacity: 1; }
 
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-        }
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
 
-        .btn {
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 2px;
-            transition: background-color 0.2s;
-            font-size: 0.9rem;
-            border: 2px solid transparent;
-        }
+    .link-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
 
-        .btn-primary {
-            background-color: var(--accent);
-            color: var(--text-light);
-        }
+    .link-handle {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-        .btn-primary:hover {
-            background-color: #008c93;
-        }
+    .link-arrow {
+      flex-shrink: 0;
+      color: var(--text-muted);
+      transition: color 0.2s, transform 0.2s;
+    }
 
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--accent);
-            border-color: var(--accent);
-        }
+    .link-card:hover .link-arrow {
+      color: var(--green-mid);
+      transform: translateX(3px);
+    }
 
-        .btn-secondary:hover {
-            background-color: rgba(0, 173, 181, 0.1);
-        }
-    </style>
+    /* ---- FOOTER ---- */
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    footer span { margin: 0 6px; }
+  </style>
 </head>
 <body>
+  <div class="container">
 
-    <header>
-        <h1>System Architecture</h1>
-        <p class="subtitle">Interactive Blueprint // Select a station to view specs</p>
+    <header class="header fade-up">
+      <div class="avatar-wrap">
+        <div class="avatar-ring">
+          <!-- Replace the src below with your avatar URL to activate it -->
+          <img id="avatar-img" src="https://avatars.githubusercontent.com/u/119545132?v=4" alt="TheCascadian">
+          <span class="avatar-initials" id="avatar-initials">TC</span>
+        </div>
+      </div>
+      <h1 class="name">TheCascadian</h1>
+      <p class="location"><span class="location-dot"></span>WA, USA</p>
+      <p class="bio">
+        Game developer, modder, and UI/UX designer.
+        Building browser games, Minecraft mods, and experimental tools from the
+        Pacific Northwest. Focused on procedural systems, open development, and
+        crafted player experiences.
+      </p>
     </header>
 
-    <div class="factory-container">
-        <svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
-            
-            <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#333" stroke-width="0.5"/>
-                </pattern>
-            </defs>
-            <rect width="1000" height="800" fill="url(#grid)" />
+    <div class="divider fade-up"></div>
 
-            <path class="conveyor-path" d="M 370 200 L 580 200" />
-            <path class="conveyor-dashes" d="M 370 200 L 580 200" />
-            
-            <path class="conveyor-path" d="M 180 160 L 180 260 L 250 260" />
-            <path class="conveyor-dashes" d="M 180 160 L 180 260 L 250 260" />
+    <!-- CODE & PROJECTS -->
+    <section class="category fade-up">
+      <div class="category-header">
+        <span class="category-label">Code &amp; Projects</span>
+        <span class="category-rule"></span>
+      </div>
 
-            <path class="conveyor-path" d="M 720 200 L 780 200" />
-            <path class="conveyor-dashes" d="M 720 200 L 780 200" />
+      <a href="https://github.com/TheCascadian" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/github/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">GitHub</span>
+          <span class="link-handle">github.com/TheCascadian</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
 
-            <path class="conveyor-path" d="M 250 540 L 320 540 L 320 620" />
-            <path class="conveyor-dashes" d="M 250 540 L 320 540 L 320 620" />
+      <a href="https://huggingface.co/TheCascadian" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/huggingface/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">Hugging Face</span>
+          <span class="link-handle">huggingface.co/TheCascadian</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </section>
 
-            <path class="conveyor-path" d="M 720 540 L 780 540" />
-            <path class="conveyor-dashes" d="M 720 540 L 780 540" />
+    <!-- GAMES & MODS -->
+    <section class="category fade-up">
+      <div class="category-header">
+        <span class="category-label">Games &amp; Mods</span>
+        <span class="category-rule"></span>
+      </div>
 
-            <path class="conveyor-path" d="M 850 240 L 850 500" />
-            <path class="conveyor-dashes" d="M 850 240 L 850 500" />
+      <a href="https://thecascadian.itch.io" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/itchdotio/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">itch.io</span>
+          <span class="link-handle">thecascadian.itch.io</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
 
+      <a href="https://modrinth.com/user/CascadianBuilder" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/modrinth/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">Modrinth</span>
+          <span class="link-handle">modrinth.com/user/CascadianBuilder</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
 
-            <rect x="40" y="40" width="420" height="340" class="zone-rect" />
-            <text x="60" y="75" class="zone-label">Zone 1: Engine Core</text>
-            
-            <g class="station" data-id="p1" tabindex="0" role="button">
-                <rect x="110" y="120" width="140" height="80" rx="4" />
-                <text x="180" y="160">Starship Forge</text>
-            </g>
-            <g class="station" data-id="p2" tabindex="0" role="button">
-                <rect x="250" y="220" width="140" height="80" rx="4" />
-                <text x="320" y="260">PixelForge</text>
-            </g>
+      <a href="https://www.nexusmods.com/profile/SynphulHero/mods" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/nexusmods/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">Nexus Mods</span>
+          <span class="link-handle">nexusmods.com/profile/SynphulHero</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </section>
 
-            <rect x="540" y="40" width="420" height="340" class="zone-rect" />
-            <text x="560" y="75" class="zone-label">Zone 2: ML Infra</text>
+    <!-- CONTENT -->
+    <section class="category fade-up">
+      <div class="category-header">
+        <span class="category-label">Content</span>
+        <span class="category-rule"></span>
+      </div>
 
-            <g class="station" data-id="p3" tabindex="0" role="button">
-                <rect x="580" y="160" width="140" height="80" rx="4" />
-                <text x="650" y="200">HyperOuroSLM</text>
-            </g>
-            <g class="station" data-id="p4" tabindex="0" role="button">
-                <rect x="780" y="160" width="140" height="80" rx="4" />
-                <text x="850" y="200">Transform GUI</text>
-            </g>
+      <a href="https://www.youtube.com/@SynphulHero" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/youtube/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">YouTube</span>
+          <span class="link-handle">@SynphulHero</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
 
-            <rect x="40" y="420" width="420" height="340" class="zone-rect" />
-            <text x="60" y="455" class="zone-label">Zone 3: Tooling</text>
+      <a href="https://www.twitch.tv/prophetpnw" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/twitch/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">Twitch</span>
+          <span class="link-handle">twitch.tv/prophetpnw</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </section>
 
-            <g class="station" data-id="p5" tabindex="0" role="button">
-                <rect x="110" y="500" width="140" height="80" rx="4" />
-                <text x="180" y="540">Sci-Fi Gen</text>
-            </g>
-            <g class="station" data-id="p6" tabindex="0" role="button">
-                <rect x="250" y="620" width="140" height="80" rx="4" />
-                <text x="320" y="660">Pixel Art Tool</text>
-            </g>
+    <!-- COMMUNITY -->
+    <section class="category fade-up">
+      <div class="category-header">
+        <span class="category-label">Community</span>
+        <span class="category-rule"></span>
+      </div>
 
-            <rect x="540" y="420" width="420" height="340" class="zone-rect" />
-            <text x="560" y="455" class="zone-label">Zone 4: Execution</text>
+      <a href="https://www.patreon.com/c/SynphulHero" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/patreon/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">Patreon</span>
+          <span class="link-handle">patreon.com/c/SynphulHero</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
 
-            <g class="station" data-id="p7" tabindex="0" role="button">
-                <rect x="580" y="500" width="140" height="80" rx="4" />
-                <text x="650" y="540">Enterprise Inc.</text>
-            </g>
-            <g class="station" data-id="p8" tabindex="0" role="button">
-                <rect x="780" y="500" width="140" height="80" rx="4" />
-                <text x="850" y="540">Necesse Clone</text>
-            </g>
-        </svg>
-    </div>
+      <a href="https://www.reddit.com/user/ProphetPNW/" target="_blank" rel="noopener" class="link-card">
+        <span class="link-icon"><img src="https://cdn.simpleicons.org/reddit/2c5f4a" alt=""></span>
+        <span class="link-info">
+          <span class="link-name">Reddit</span>
+          <span class="link-handle">u/ProphetPNW</span>
+        </span>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </section>
 
-    <div class="modal-backdrop" id="modalBackdrop">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <button class="close-btn" id="closeBtn" aria-label="Close modal">&times;</button>
-            <h2 id="modalTitle">Project Name</h2>
-            <p class="desc" id="modalDesc">Project description goes here.</p>
-            <div class="tech-stack" id="modalStack">
-                </div>
-            <div class="modal-actions">
-                <a href="#" target="_blank" class="btn btn-primary" id="modalRepo">View Source</a>
-                <a href="#" target="_blank" class="btn btn-secondary" id="modalCollab">Collaborate</a>
-            </div>
-        </div>
-    </div>
+    <footer class="fade-up">
+      TheCascadian <span>&middot;</span> Last Updated: March 3rd, 2026
+    </footer>
 
-    <script>
-        // Project Data Dictionary
-        const projectsData = {
-            p1: {
-                name: "Starship Forge",
-                description: "A robust C++ based game engine optimized for 2D space simulations and massive particle systems.",
-                stack: ["C++", "OpenGL", "CMake"],
-                repo: "https://github.com/yourusername/starship-forge",
-                collab: "https://github.com/yourusername/starship-forge/issues"
-            },
-            p2: {
-                name: "PixelForge",
-                description: "Lightweight rendering wrapper for rapid prototyping of 2D grid-based games.",
-                stack: ["Rust", "WGPU"],
-                repo: "https://github.com/yourusername/pixelforge",
-                collab: "mailto:your.email@example.com"
-            },
-            p3: {
-                name: "HyperOuroSLM",
-                description: "Small Language Model deployment infrastructure tailored for edge devices.",
-                stack: ["Python", "PyTorch", "ONNX", "Docker"],
-                repo: "https://github.com/yourusername/hyperouroslm",
-                collab: "https://github.com/yourusername/hyperouroslm/issues"
-            },
-            p4: {
-                name: "Transformer Training GUI",
-                description: "A local desktop interface for monitoring and tweaking transformer model hyperparameters in real-time.",
-                stack: ["React", "Electron", "FastAPI"],
-                repo: "https://github.com/yourusername/transformer-gui",
-                collab: "https://github.com/yourusername/transformer-gui/issues"
-            },
-            p5: {
-                name: "Procedural Sci-Fi Generator",
-                description: "Generates seamless space station layouts and hull textures using wave function collapse.",
-                stack: ["JavaScript", "Canvas API", "Algorithms"],
-                repo: "https://github.com/yourusername/scifi-gen",
-                collab: "https://github.com/yourusername/scifi-gen/issues"
-            },
-            p6: {
-                name: "Pixel Art Tooling",
-                description: "Command line utility for bulk processing, scaling, and palettizing sprite sheets.",
-                stack: ["Go", "CLI"],
-                repo: "https://github.com/yourusername/pixel-tools",
-                collab: "https://github.com/yourusername/pixel-tools/issues"
-            },
-            p7: {
-                name: "Corporate Enterprise Inc.",
-                description: "A satirical incremental browser game about managing an infinitely growing bureaucracy.",
-                stack: ["HTML5", "CSS3", "Vanilla JS"],
-                repo: "https://github.com/yourusername/enterprise-inc",
-                collab: "https://github.com/yourusername/enterprise-inc/issues"
-            },
-            p8: {
-                name: "Necesse Browser Clone",
-                description: "A highly optimized browser adaptation of popular top-down survival mechanics.",
-                stack: ["TypeScript", "Phaser.io"],
-                repo: "https://github.com/yourusername/necesse-clone",
-                collab: "https://github.com/yourusername/necesse-clone/issues"
-            }
-        };
+  </div>
 
-        // DOM Elements
-        const stations = document.querySelectorAll('.station');
-        const backdrop = document.getElementById('modalBackdrop');
-        const closeBtn = document.getElementById('closeBtn');
-        
-        // Modal Content Elements
-        const mTitle = document.getElementById('modalTitle');
-        const mDesc = document.getElementById('modalDesc');
-        const mStack = document.getElementById('modalStack');
-        const mRepo = document.getElementById('modalRepo');
-        const mCollab = document.getElementById('modalCollab');
-
-        // Functions
-        function openModal(id) {
-            const data = projectsData[id];
-            if (!data) return;
-
-            mTitle.textContent = data.name;
-            mDesc.textContent = data.description;
-            
-            // Clear and populate stack
-            mStack.innerHTML = '';
-            data.stack.forEach(tech => {
-                const span = document.createElement('span');
-                span.className = 'tech-tag';
-                span.textContent = tech;
-                mStack.appendChild(span);
-            });
-
-            mRepo.href = data.repo;
-            mCollab.href = data.collab;
-
-            backdrop.classList.add('active');
-            closeBtn.focus();
-        }
-
-        function closeModal() {
-            backdrop.classList.remove('active');
-        }
-
-        // Event Listeners
-        stations.forEach(station => {
-            // Click support
-            station.addEventListener('click', () => {
-                openModal(station.dataset.id);
-            });
-            
-            // Keyboard accessibility (Enter key)
-            station.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openModal(station.dataset.id);
-                }
-            });
-        });
-
-        // Close via button
-        closeBtn.addEventListener('click', closeModal);
-
-        // Close via backdrop click
-        backdrop.addEventListener('click', (e) => {
-            if (e.target === backdrop) closeModal();
-        });
-
-        // Close via Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && backdrop.classList.contains('active')) {
-                closeModal();
-            }
-        });
-    </script>
+  <script>
+    // Avatar: set img#avatar-img src to your avatar URL.
+    // On successful load, initials are hidden and the image displays.
+    const img = document.getElementById('avatar-img');
+    const initials = document.getElementById('avatar-initials');
+    if (img && img.src && img.src !== window.location.href) {
+      img.addEventListener('load', () => {
+        img.style.display = 'block';
+        if (initials) initials.style.display = 'none';
+      });
+    }
+  </script>
 </body>
 </html>
