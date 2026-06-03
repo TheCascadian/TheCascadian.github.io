@@ -7,6 +7,7 @@ src/pagefind/index/
 src/pagefind/*.pagefind
 src/pagefind/*.pf_meta
 .github/skills/
+.github/prompts/
 node_modules/
 src/
 .private/

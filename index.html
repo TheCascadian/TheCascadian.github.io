@@ -21,6 +21,11 @@
       --text-sub:     #4d6b5b;
       --text-muted:   #63746a;
       --radius:       5px;
+      
+      /* Dashboard specific */
+      --danger-bg:    #fff0f0;
+      --danger-border:#d93025;
+      --danger-text:  #a50e0e;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,6 +70,8 @@
     .fade-up:nth-child(4) { animation-delay: 0.26s; }
     .fade-up:nth-child(5) { animation-delay: 0.33s; }
     .fade-up:nth-child(6) { animation-delay: 0.40s; }
+    .fade-up:nth-child(7) { animation-delay: 0.47s; }
+    .fade-up:nth-child(8) { animation-delay: 0.54s; }
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -91,7 +98,6 @@
       overflow: hidden;
     }
 
-    /* Set img[src] to your avatar URL; initials auto-hide on load */
     .avatar-ring img {
       width: 100%;
       height: 100%;
@@ -197,8 +203,12 @@
       overflow: hidden;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     }
+    button.link-card {
+      width: 100%;
+      cursor: pointer;
+      text-align: left;
+    }
 
-    /* left-bar reveal on hover */
     .link-card::before {
       content: '';
       position: absolute;
@@ -228,19 +238,18 @@
       justify-content: center;
     }
 
-    .link-icon img {
+    .link-icon img, .link-icon svg {
       width: 22px;
       height: 22px;
       opacity: 0.65;
       transition: opacity 0.2s;
+      fill: var(--green-dark);
+      color: var(--green-dark);
     }
 
-    .link-card:hover .link-icon img { opacity: 1; }
+    .link-card:hover .link-icon img, .link-card:hover .link-icon svg { opacity: 1; }
 
-    .link-info {
-      flex: 1;
-      min-width: 0;
-    }
+    .link-info { flex: 1; min-width: 0; }
 
     .link-name {
       font-family: 'Syne', sans-serif;
@@ -258,7 +267,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
+    
     .link-arrow {
       flex-shrink: 0;
       color: var(--text-muted);
@@ -269,6 +278,268 @@
       color: var(--green-mid);
       transform: translateX(3px);
     }
+
+    /* ---- MODAL (SPECIAL PANEL) ---- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(27, 46, 36, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 100000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-container {
+      background: var(--surface);
+      width: 100%;
+      max-width: 1300px;
+      height: 90vh;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.98);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.active .modal-container {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #fcfcfc;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .close-btn:hover { color: var(--danger-border); }
+
+    /* Dashboard Layout inside Modal */
+    .dashboard-warning {
+      background-color: var(--danger-bg);
+      border-bottom: 2px solid var(--danger-border);
+      padding: 16px 24px;
+    }
+    
+    .warning-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--danger-text);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .warning-text {
+      font-size: 0.85rem;
+      color: var(--danger-text);
+      line-height: 1.5;
+      max-width: 1000px;
+    }
+
+    .dash-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    @media (min-width: 768px) {
+      .dash-body { flex-direction: row; }
+    }
+
+    .dash-sidebar {
+      width: 100%;
+      background: #f9f9f9;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+    }
+    @media (min-width: 768px) {
+      .dash-sidebar {
+        width: 220px;
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+    }
+
+    .dash-tab {
+      background: none;
+      border: none;
+      padding: 16px 20px;
+      text-align: left;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    @media (max-width: 767px) {
+      .dash-tab { border-left: none; border-bottom: 3px solid transparent; }
+    }
+
+    .dash-tab:hover { background: rgba(0,0,0,0.03); color: var(--text-primary); }
+    .dash-tab.active {
+      color: var(--green-dark);
+      background: var(--surface);
+    }
+    @media (min-width: 768px) {
+      .dash-tab.active { border-left-color: var(--green-dark); }
+    }
+    @media (max-width: 767px) {
+      .dash-tab.active { border-bottom-color: var(--green-dark); }
+    }
+
+    .dash-content {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      background: var(--surface);
+    }
+
+    .view-section { display: none; }
+    .view-section.active { display: block; animation: fadeIn 0.3s ease; }
+
+    /* Dynamic Flex/Grid Layouts for Data */
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .search-bar {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+    }
+    .search-bar:focus { outline: none; border-color: var(--green-dark); }
+
+    /* Flexbox Grid */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .data-card {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: #fafafa;
+    }
+
+    .data-card h4 { font-family: 'Syne', sans-serif; font-size: 1.05rem; margin-bottom: 6px; color: var(--text-primary);}
+    .data-card .meta { 
+      font-size: 0.65rem; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em;
+      color: var(--green-dark); 
+      font-weight: 700; 
+      margin-bottom: 10px; 
+      padding: 3px 6px;
+      background: var(--green-mist);
+      border-radius: 3px;
+      display: inline-block;
+      align-self: flex-start;
+    }
+    .data-card p { font-size: 0.8rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 12px; flex: 1;}
+    .data-card .metrics {
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      margin-top: auto;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    /* Era Timeline Layout */
+    .era-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    @media (min-width: 900px) { .era-layout { flex-direction: row; } }
+    .era-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .era-btn {
+      text-align: left; background: #f9f9f9; border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius); cursor: pointer; transition: all 0.15s;
+    }
+    .era-btn.active { background: var(--green-mist); border-color: var(--green-dark); }
+    .era-title { font-family: 'Syne', sans-serif; font-weight: 700; display: block; font-size: 1rem; color: var(--text-primary); }
+    .era-years { font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 4px;}
+    
+    .era-detail-pane {
+      flex: 2;
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .era-detail-pane h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; color: var(--green-dark); margin-bottom: 12px; }
+    .era-detail-pane p { font-size: 0.9rem; line-height: 1.6; color: var(--text-sub); margin-bottom: 16px; }
+    .metric-badges {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;
+    }
+    .metric-badge {
+      background: var(--surface); border: 1px solid var(--border); padding: 10px 14px; border-radius: var(--radius); flex: 1; min-width: 120px;
+    }
+    .metric-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .metric-val { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--green-dark); font-size: 1.1rem; display: block; }
 
     /* ---- FOOTER ---- */
     footer {
@@ -287,7 +558,6 @@
     <header class="header fade-up">
       <div class="avatar-wrap">
         <div class="avatar-ring">
-          <!-- Replace the src below with your avatar URL to activate it -->
           <img id="avatar-img" src="https://avatars.githubusercontent.com/u/119545132?v=4" alt="TheCascadian">
           <span class="avatar-initials" id="avatar-initials">TC</span>
         </div>
@@ -417,15 +687,98 @@
       </a>
     </section>
 
+    <!-- HISTORICAL ARCHIVE BUTTON -->
+    <section class="category fade-up">
+      <div class="category-header">
+        <span class="category-label">Historical Research</span>
+        <span class="category-rule"></span>
+      </div>
+
+      <button id="open-archive-btn" class="link-card">
+        <span class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>
+        </span>
+        <span class="link-info">
+          <span class="link-name" style="color: var(--danger-text);">Unlock Historical Archives</span>
+          <span class="link-handle">The Crucible of Cascadia (1917-1949)</span>
+        </span>
+      </button>
+    </section>
+
     <footer class="fade-up">
       TheCascadian <span>&middot;</span> Last Updated: March 3rd, 2026
     </footer>
 
   </div>
 
+  <!-- SPECIAL PANEL: FULL SCREEN MODAL -->
+  <div id="historical-modal" class="modal-overlay">
+    <div class="modal-container">
+      
+      <div class="modal-header">
+        <h2 class="modal-title">The Crucible of Cascadia (1917–1949)</h2>
+        <button id="close-archive-btn" class="close-btn">&times;</button>
+      </div>
+
+      <div class="dashboard-warning">
+        <div class="warning-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          Historical Documentation Notice
+        </div>
+        <div class="warning-text">
+          The following artifact represents synthesized academic data regarding political, social, and economic turmoil in Washington State. <strong>This dataset documents hate groups, systemic racism, and political extremism (including the KKK, Silver Legion, and radical factions).</strong> This is presented strictly for educational research, complex data analysis, and historical transparency. It does not endorse or promote any hateful beliefs.
+        </div>
+      </div>
+
+      <div class="dash-body">
+        <nav class="dash-sidebar">
+          <button class="dash-tab active" data-target="timeline">Chronological Eras</button>
+          <button class="dash-tab" data-target="counties">County Heatmap Data</button>
+          <button class="dash-tab" data-target="bios">Biographical Network</button>
+          <button class="dash-tab" data-target="industries">Industries & Bases</button>
+        </nav>
+
+        <div class="dash-content">
+          <!-- TIMELINE VIEW -->
+          <div id="view-timeline" class="view-section active">
+            <div class="era-layout">
+              <div class="era-list" id="era-list"></div>
+              <div class="era-detail-pane">
+                <h3 id="era-title">Select an Era</h3>
+                <p id="era-desc">Click on an era from the list to view historical summaries and key metrics.</p>
+                <div class="metric-badges" id="era-metrics"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COUNTIES VIEW -->
+          <div id="view-counties" class="view-section">
+            <div class="controls">
+              <input type="text" id="county-search" class="search-bar" placeholder="Search counties, cities, or historical legacies...">
+            </div>
+            <div class="data-grid" id="county-grid"></div>
+          </div>
+
+          <!-- BIOS VIEW -->
+          <div id="view-bios" class="view-section">
+            <div class="controls">
+              <input type="text" id="bio-search" class="search-bar" placeholder="Search historical figures, factions, or roles...">
+            </div>
+            <div class="data-grid" id="bio-grid"></div>
+          </div>
+
+          <!-- INDUSTRIES VIEW -->
+          <div id="view-industries" class="view-section">
+            <div class="data-grid" id="industry-grid"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <script>
-    // Avatar: set img#avatar-img src to your avatar URL.
-    // On successful load, initials are hidden and the image displays.
+    // --- AVATAR LOGIC ---
     const img = document.getElementById('avatar-img');
     const initials = document.getElementById('avatar-initials');
     if (img && img.src && img.src !== window.location.href) {
@@ -434,6 +787,210 @@
         if (initials) initials.style.display = 'none';
       });
     }
+
+    // --- MODAL LOGIC ---
+    const modal = document.getElementById('historical-modal');
+    const openBtn = document.getElementById('open-archive-btn');
+    const closeBtn = document.getElementById('close-archive-btn');
+
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    // --- TAB LOGIC ---
+    const tabs = document.querySelectorAll('.dash-tab');
+    const views = document.querySelectorAll('.view-section');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        views.forEach(v => v.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(`view-${tab.dataset.target}`).classList.add('active');
+      });
+    });
+
+    // --- EXHAUSTIVE DATASETS ---
+
+    const eras = [
+      { id: 'ww1', name: 'WWI Mobilization', years: '1917–1918', 
+        desc: 'Federalized wartime planning transformed Washington into an industrial powerhouse. The state shifted its economic focus toward raw material extraction and heavy maritime manufacturing. The sudden need for Sitka spruce for aviation collided with massive labor strikes, leading to the deployment of 5,000 soldiers into the forests as the Spruce Production Division.',
+        metrics: [{l: 'Enlisted Troops', v: '60,617'}, {l: 'Spruce Soldiers', v: '5,000'}, {l: 'Labor Tension', v: 'Rising'}]
+      },
+      { id: 'redscare', name: 'Labor Militancy & Red Scare', years: '1919–1920', 
+        desc: 'Post-armistice contract cancellations devastated the economy, sparking the historic 5-day Seattle General Strike involving 65,000 workers. Tensions exploded on Armistice Day in the Centralia Massacre, a violent clash between the American Legion and the IWW. The state responded by upholding severe criminal syndicalism laws, driving radical labor underground.',
+        metrics: [{l: 'Strike Participants', v: '65,000+'}, {l: 'Centralia Dead', v: '5'}, {l: 'State Coercion', v: 'High'}]
+      },
+      { id: 'klan', name: 'Rise of the Invisible Empire', years: '1921–1930', 
+        desc: 'Reactionary forces filled the post-strike vacuum. The "Second" Ku Klux Klan surged to 40,000 members across 14 documented counties. They pushed the anti-parochial Initiative 49, operated "Phantom Dry Squads" in Aberdeen, and deeply influenced the establishment of over 8,000 racially restrictive covenants in planned towns like Longview.',
+        metrics: [{l: 'Peak KKK Members', v: '40,000'}, {l: 'Issaquah Rally', v: '50,000 Attendees'}, {l: 'Initiative 49', v: 'Defeated 2-1'}]
+      },
+      { id: 'depression', name: 'Depression Extremism', years: '1931–1941', 
+        desc: 'The Great Depression fractured regional politics. On the far-right, William Dudley Pelley\'s fascist Silver Shirts operated out of Chehalis, while the New Order of Cincinnatus gained seats on the Seattle City Council. On the left, the Washington Commonwealth Federation and Communist Party organized Unemployed Councils and massive agricultural strikes in the Yakima Valley.',
+        metrics: [{l: 'Seattle Unemployment', v: '25%+'}, {l: 'Pelley WA Votes', v: '1,598'}, {l: 'WCF Membership', v: 'Tens of Thousands'}]
+      },
+      { id: 'purges', name: 'WWII Mobilization & Purges', years: '1942–1949', 
+        desc: 'Wartime production re-unified the industrial economy (Boeing, Kaiser, Hanford), but the subsequent Cold War transition catalyzed deep anti-communist investigations. The Canwell Committee systematically purged progressive academic faculty from the University of Washington, utilizing intimidation tactics pioneered by the Klan in the 1930s.',
+        metrics: [{l: 'Mobilized Guard', v: 'M-Day 1940'}, {l: 'Fired UW Profs', v: '3 Tenured'}, {l: 'AFT Local 401', v: 'Dissolved 1948'}]
+      }
+    ];
+
+    const counties = [
+      { name: 'Whatcom', tier: 'Strong', desc: 'Longest-lasting KKK chapter. Held 1929 convention where Mayor gave key to the city. Blanton Lather pioneered McCarthyist tactics here by leading the 1938 political purge of WWSC President Charles Fisher.' },
+      { name: 'Skagit', tier: 'Strong', desc: 'Closely tied to Whatcom operations. Klan activity documented well into the 1930s with significant overlap with the fascist Silver Legion.' },
+      { name: 'King', tier: 'Strong', desc: 'Flagship organizational base (Local 4). Hosted the 1924 Issaquah rally drawing 50,000 spectators. Collapsed rapidly after the failure of Initiative 49.' },
+      { name: 'Spokane', tier: 'Strong', desc: 'Headquartered in the Hyde Building. Enacted aggressive intimidation campaigns targeting the regional Black community. Led by Grand Dragon E.B. Quackenbush.' },
+      { name: 'Yakima', tier: 'Strong', desc: 'Fueled a continuous 40-year vigilantism pattern. Hosted the 1924 "Battle of Wapato" (40k spectators). Orchestrated the expulsion of Filipinos (1927) and bombing of Japanese farms (1933).' },
+      { name: 'Grays Harbor', tier: 'Strong', desc: 'Klan Mayor Albert Hopkins elected in 1924, ran "phantom dry squads". Hopkins was kidnapped and forced to resign by local businessmen in 1925.' },
+      { name: 'Chelan', tier: 'Moderate', desc: 'Active agricultural chapter. Burned massive 100x40-foot trench crosses on Fancher Heights. Targeted Filipino laborers.' },
+      { name: 'Okanogan', tier: 'Moderate', desc: 'Specialized in covert municipal electoral manipulation in Omak and Twisp. Announced transition to an "unmasked" organization in 1928.' },
+      { name: 'Snohomish', tier: 'Moderate', desc: 'Nativist strongpoints bridging urban maritime and agricultural worker bases. 1924 Stanwood initiation drew 8,000 Klansmen.' },
+      { name: 'Pierce', tier: 'Moderate', desc: 'Constrained in Tacoma by strong ethnic labor unions, but active in rural valleys. Imperial Wizard Evans spoke at the Masonic Temple in 1924.' },
+      { name: 'Thurston', tier: 'Moderate', desc: 'Hosted the final major public state rally in 1927 at Stevens Field (10,000 spectators). Fred Carlyon filed explicit racial covenants in 1926.' },
+      { name: 'Lewis', tier: 'Moderate', desc: 'Acted as a buffer against labor syndicalism following the 1919 Centralia Massacre. Marched heavily in the 1927 Olympia rally.' },
+      { name: 'Clark', tier: 'Moderate', desc: 'Birthplace of organized Klan activity in the state. Established "Columbia River Klan No. 1" in late 1922.' },
+      { name: 'Walla Walla', tier: 'Moderate', desc: 'Eastern agricultural stronghold utilizing regional theater lectures for rapid membership recruitment across the Palouse.' },
+      { name: 'Whitman', tier: 'Moderate', desc: 'Eastern farm belt chapter. Met with fierce regional editorial resistance from the Pullman Herald. Initiated members under 90-foot burning crosses.' },
+      { name: 'Columbia', tier: 'Moderate', desc: 'Documented via photo evidence marching in the Dayton Days parade in June 1923, leveraging pre-existing local dry laws.' },
+      { name: 'Kittitas', tier: 'Likely / Contextual', desc: 'Reflected deep anti-Japanese sentiment during early Great Depression labor strains. Vigilante mobs expelled Japanese potato laborers in 1931.' },
+      { name: 'Kitsap', tier: 'Likely / Contextual', desc: 'U.S. Navy Klan chapter documented aboard the USS Tennessee in Puget Sound. Extensive waterfront racial covenants filed in the 1920s.' },
+      { name: 'Cowlitz', tier: 'Likely / Contextual', desc: 'Institutionalized racial exclusion. Longview founded in 1923 with over 8,000 racially restrictive covenants built directly into corporate deeds.' },
+      { name: 'Douglas', tier: 'Likely / Contextual', desc: 'Nativist sentiment shaped by adjacent agricultural struggles in Chelan and Okanogan counties.' },
+      { name: '16 Other Counties', tier: 'No Documentation Found', desc: 'Adams, Asotin, Clallam, Ferry, Garfield, Island, Jefferson, Klickitat, Lincoln, Mason, Pacific, Pend Oreille, San Juan, Skamania, Stevens, Wahkiakum.' }
+    ];
+
+    const bios = [
+      { name: 'Luther Ivan Powell', role: 'KKK King Kleagle', faction: 'Right-Wing/Fascist', desc: 'Arrived from Oregon in 1922 to establish Seattle Local 4. Built the KKK to 40,000 state members before organizing the fascist Silver Shirts in the 1930s.' },
+      { name: 'E. B. Quackenbush', role: 'Grand Dragon (Klan)', faction: 'Right-Wing/Fascist', desc: 'Spokane attorney who coordinated the state Klan\'s legal defense teams and managed communications.' },
+      { name: 'Rev. C. A. Rexroad', role: 'Exalted Cyclops', faction: 'Right-Wing/Fascist', desc: 'Pastor of the Corbin Park Methodist Church in Spokane; used his pulpit to actively recruit and legitimize Klan ideology.' },
+      { name: 'Albert G. Hopkins', role: 'Mayor of Aberdeen', faction: 'Right-Wing/Fascist', desc: 'Civil War veteran who led armed "phantom dry squads." Kidnapped and forced to resign by rival business groups in 1925.' },
+      { name: 'Orville W. Roundtree', role: 'Silver Shirts Liaison', faction: 'Right-Wing/Fascist', desc: 'Chehalis businessman who ran the Silver Legion\'s state headquarters and funded national fascist operations.' },
+      { name: 'Roy Zachary', role: 'National Field Marshal', faction: 'Right-Wing/Fascist', desc: 'Seattle-based agitator and primary troubleshooter for William Dudley Pelley; interned during WWII.' },
+      { name: 'William Dudley Pelley', role: 'Silver Legion Leader', faction: 'Right-Wing/Fascist', desc: 'National fascist leader. Washington was the only state where he secured a spot on the 1936 presidential ballot (1,598 votes).' },
+      { name: 'Arthur B. Langlie', role: 'Cincinnatus Member', faction: 'Conservative', desc: 'Began his political career in the pseudo-fascist New Order of Cincinnatus in 1933; later became Washington Governor.' },
+      { name: 'Morris Raport', role: 'CPUSA District 12 Sec.', faction: 'Left-Wing/Radical', desc: 'Directed industrial and agricultural union organizing during the Popular Front era; faced multiple federal deportation attempts.' },
+      { name: 'Aaron Fislerman', role: 'Communist Party Leader', faction: 'Left-Wing/Radical', desc: 'Indicted for sedition during WWI; expelled in 1928 during internal party purges as a Trotskyist.' },
+      { name: 'Henry "Heinie" Huff', role: 'CPUSA Organizer', faction: 'Left-Wing/Radical', desc: 'Charter member since 1920. Indicted under the federal Smith Act in 1953 as one of the prominent "Seattle Seven".' },
+      { name: 'Earl George', role: 'Unemployed & ILWU Organizer', faction: 'Left-Wing/Radical', desc: 'WWI veteran and Seattle General Strike participant; became the first Black president of ILWU Local 9 in 1949.' },
+      { name: 'Carl Brooks', role: 'Civil Rights Leader', faction: 'Left-Wing/Radical', desc: 'President of the League of Struggle for Negro Rights (1934) and active Washington Commonwealth Federation organizer.' },
+      { name: 'Terry Pettus', role: 'Radical Newspaper Editor', faction: 'Left-Wing/Radical', desc: 'Editor of the Washington New Dealer; led a famous 91-day Newspaper Guild strike.' },
+      { name: 'William J. Pennock', role: 'WCF Executive Secretary', faction: 'Left-Wing/Radical', desc: 'UW student leader who became executive secretary of the WCF; elected to the State Legislature in 1938.' },
+      { name: 'Irene Hull', role: 'CPUSA Carpenter & Activist', faction: 'Left-Wing/Radical', desc: 'Vancouver shipyard carpenter who organized the Congress of American Women during the Canwell hearings.' },
+      { name: 'Paul Bowen', role: 'Boeing Worker & CP Educator', faction: 'Left-Wing/Radical', desc: 'Boeing industrial worker fired for political activity; served as CPUSA Northwest District Education Director.' },
+      { name: 'John Caughlan', role: 'Defense Attorney', faction: 'Left-Wing/Radical', desc: 'Eminent civil rights attorney who defended local Communist Party leaders and the "Seattle Seven" during Smith Act trials.' },
+      { name: 'Melvin Rader', role: 'UW Philosophy Professor', faction: 'Academic Radicalism', desc: 'Championed civil liberties; falsely accused of secret communist affiliation by the Canwell Committee but eventually cleared.' },
+      { name: 'Herbert J. Philips', role: 'UW Philosophy Professor', faction: 'Academic Radicalism', desc: 'Openly acknowledged his membership in the Communist Party, leading to his landmark dismissal by the UW Board of Regents in 1949.' },
+      { name: 'Albert L. Franzke', role: 'UW Speech Professor', faction: 'Academic Radicalism', desc: 'Actively supported progressive faculty unionization (AFT Local 401) and defended academic freedom.' },
+      { name: 'Elton Guthrie', role: 'UW Sociology Instructor', faction: 'Academic Radicalism', desc: 'AFT union organizer who coordinated with regional labor defense committees during strikes.' },
+      { name: 'Maurice Thompson', role: 'Adjutant General', faction: 'State/Military', desc: 'Longest-serving Adjutant General in state history (29 years). Directed the mobilization for both WWI and WWII (M-Day 1940).' }
+    ];
+
+    const industries = [
+      { name: 'Skinner & Eddy Corporation', type: 'Shipyard (Seattle)', desc: 'Built 75 steel vessels during WWI. Shattered national records by launching freighters within 93 working days of keel-laying. Closed permanently in 1923 after post-war contract cancellations.' },
+      { name: 'Todd Shipyards', type: 'Shipyard (Tacoma)', desc: 'Major steel vessel constructor. Retrenched operations during the interwar slump but pivoted to repair services and massive naval contracts during WWII.' },
+      { name: 'Camp Lewis', type: 'Military Base (Pierce Co.)', desc: 'Built in 90 days by 10,000 civilian workers in 1917. Trained the 46,000-man 91st Infantry Division. Expanded into Fort Lewis.' },
+      { name: 'Camp Murray', type: 'Military Base (Pierce Co.)', desc: 'State Military Reservation adjacent to Fort Lewis. Directed and expanded by Adjutant General Maurice Thompson.' },
+      { name: 'AFT Local 401', type: 'Academic Union (UW)', desc: 'Founded in 1935 by progressive faculty. Targeted by the 1948 Canwell legislative hearings and formally dissolved by national AFT leadership under allegations of communist control.' }
+    ];
+
+    // --- RENDER LOGIC ---
+    
+    // Timeline
+    const eraList = document.getElementById('era-list');
+    const eraTitle = document.getElementById('era-title');
+    const eraDesc = document.getElementById('era-desc');
+    const eraMetrics = document.getElementById('era-metrics');
+
+    eras.forEach((era, index) => {
+      const btn = document.createElement('button');
+      btn.className = `era-btn ${index === 0 ? 'active' : ''}`;
+      btn.innerHTML = `<span class="era-title">${era.name}</span><span class="era-years">${era.years}</span>`;
+      
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.era-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        eraTitle.textContent = `${era.name} (${era.years})`;
+        eraDesc.textContent = era.desc;
+        
+        eraMetrics.innerHTML = era.metrics.map(m => `
+          <div class="metric-badge">
+            <span class="metric-label">${m.l}</span>
+            <span class="metric-val">${m.v}</span>
+          </div>
+        `).join('');
+      });
+      
+      eraList.appendChild(btn);
+    });
+
+    // Init first era
+    if(eras.length > 0) {
+      eraTitle.textContent = `${eras[0].name} (${eras[0].years})`;
+      eraDesc.textContent = eras[0].desc;
+      eraMetrics.innerHTML = eras[0].metrics.map(m => `
+        <div class="metric-badge">
+          <span class="metric-label">${m.l}</span>
+          <span class="metric-val">${m.v}</span>
+        </div>
+      `).join('');
+    }
+
+    // Grids
+    function renderGrid(containerId, data, templateFn) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = data.map(templateFn).join('');
+    }
+
+    const countyTemplate = c => `
+      <div class="data-card">
+        <h4>${c.name}</h4>
+        <span class="meta">${c.tier}</span>
+        <p>${c.desc}</p>
+        <div class="metrics">WA-KKK-DATA</div>
+      </div>
+    `;
+
+    const bioTemplate = b => `
+      <div class="data-card">
+        <h4>${b.name}</h4>
+        <span class="meta">${b.faction}</span>
+        <p><strong>${b.role}:</strong> ${b.desc}</p>
+        <div class="metrics">BIO-REGISTRY</div>
+      </div>
+    `;
+
+    const industryTemplate = i => `
+      <div class="data-card">
+        <h4>${i.name}</h4>
+        <span class="meta">${i.type}</span>
+        <p>${i.desc}</p>
+        <div class="metrics">IND-MIL-DATA</div>
+      </div>
+    `;
+
+    renderGrid('county-grid', counties, countyTemplate);
+    renderGrid('bio-grid', bios, bioTemplate);
+    renderGrid('industry-grid', industries, industryTemplate);
+
+    // Search Logic
+    document.getElementById('county-search').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = counties.filter(c => c.name.toLowerCase().includes(term) || c.desc.toLowerCase().includes(term) || c.tier.toLowerCase().includes(term));
+      renderGrid('county-grid', filtered, countyTemplate);
+    });
+
+    document.getElementById('bio-search').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = bios.filter(b => b.name.toLowerCase().includes(term) || b.faction.toLowerCase().includes(term) || b.desc.toLowerCase().includes(term) || b.role.toLowerCase().includes(term));
+      renderGrid('bio-grid', filtered, bioTemplate);
+    });
   </script>
 </body>
 </html>
