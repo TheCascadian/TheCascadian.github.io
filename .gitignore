@@ -11,3 +11,4 @@ src/pagefind/*.pf_meta
 node_modules/
 src/
 .private/
+package-lock.json
