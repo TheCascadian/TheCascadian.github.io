@@ -1,0 +1,152 @@
+# =============================================================================
+# repository-metadata.yml
+# Local metadata layer for the GitHub Project Index.
+#
+# This file is merged with data pulled from the GitHub API at build time
+# (see scripts/update-repositories.mjs). GitHub remains the source of truth
+# for names, descriptions, languages, stars, forks, dates and topics.
+# Everything defined here OVERRIDES or EXTENDS that data:
+#
+#   category      : mods | hoi4 | fallout4 | python | random | unsorted
+#   status        : active | development | experimental | maintenance
+#                   archived | abandoned
+#   featured      : true only when manually selected (never automatic)
+#   displayName   : override how the repo name is rendered
+#   description   : override the GitHub description
+#   tags          : extra topic tags appended to GitHub topics
+#   order         : manual sort weight within a category (lower = earlier)
+#   image         : site-relative thumbnail path (e.g. assets/repos/foo.png)
+#   notes         : short custom note shown on the card / detail page
+#   related       : other repository names this project relates to
+#   homepage      : override/add a demo or documentation link
+#   exclude       : true keeps a repository out of the catalog entirely
+#
+# Repositories present on GitHub but absent here are NOT dropped: they land
+# in the explicit UNSORTED state with status "unknown" until categorized.
+# =============================================================================
+
+site:
+  owner: TheCascadian
+  title: "DON — GitHub Project Index"
+  profileUrl: https://github.com/TheCascadian
+
+repositories:
+
+  # ---------------------------------------------------------------------------
+  # UNIVERSAL MODS — Minecraft modding (NeoForge / Forge / Fabric / Java)
+  # ---------------------------------------------------------------------------
+  Universal-Ore-Processing:
+    category: mods
+    status: development
+    tags: [neoforge, minecraft, java, automation]
+    notes: Part of the Universal* compatibility series.
+    related: [Universal-Pipes, Universal-Compression, Universal-Armor]
+
+  Universal-Pipes:
+    category: mods
+    status: development
+    tags: [neoforge, minecraft, java, logistics]
+    related: [Universal-Ore-Processing, Universal-Compression, Universal-Armor]
+
+  Universal-Compression:
+    category: mods
+    status: development
+    tags: [neoforge, minecraft, java, compression]
+    related: [Universal-Ore-Processing, Universal-Pipes, Universal-Armor]
+
+  Universal-Armor:
+    category: mods
+    status: development
+    tags: [neoforge, minecraft, java, crafting]
+    related: [Universal-Armor-Extended, Universal-Ore-Processing]
+
+  Universal-Armor-Extended:
+    category: mods
+    status: experimental
+    tags: [neoforge, minecraft, java, armor]
+    related: [Universal-Armor]
+
+  creating_space:
+    category: mods
+    status: maintenance
+    tags: [create-mod, neoforge, minecraft, java, fork]
+    notes: Custom fork of the Create addon "Creating Space".
+
+  # ---------------------------------------------------------------------------
+  # HOI4 MOD TOOLING — Hearts of Iron IV development tools
+  # ---------------------------------------------------------------------------
+  HOI4FocusGUI:
+    category: hoi4
+    status: active
+    featured: true
+    tags: [gui, focus-tree, generator, desktop-app]
+    notes: >-
+      Python-based HOI4 mod GUI, primarily built for generating random focus
+      trees.
+    related: [HOI4UnitStacks, HOI4ModernUtils, open-hoi4-gfx]
+
+  HOI4UnitStacks:
+    category: hoi4
+    status: experimental
+    tags: [generator, data-parser, unitstacks]
+    related: [HOI4FocusGUI]
+
+  HOI4ModernUtils:
+    category: hoi4
+    status: maintenance
+    tags: [vscode-extension, tooling, fork]
+    notes: Fork of the hoi4modutilities VS Code extension with added functions.
+
+  open-hoi4-gfx:
+    category: hoi4
+    status: active
+    tags: [icons, asset-collection, reference]
+    notes: Curated compilation of freely available HOI4 icons.
+    related: [HOI4FocusGUI]
+
+  # ---------------------------------------------------------------------------
+  # FALLOUT 4 TOOLING — reserved category.
+  # No repositories currently match this domain; it stays visible in the
+  # navigation so future Fallout 4 tooling can be added without redesign.
+  # ---------------------------------------------------------------------------
+
+  # ---------------------------------------------------------------------------
+  # PYTHON — general Python projects
+  # ---------------------------------------------------------------------------
+  Public-Python-Package:
+    category: python
+    status: maintenance
+    tags: [utilities, desktop, automation]
+    notes: Collection of Python utilities (inventory system, renamers, generators).
+
+  # ---------------------------------------------------------------------------
+  # RANDOM PROJECTS — everything else
+  # ---------------------------------------------------------------------------
+  EffectiveEngine:
+    category: random
+    status: experimental
+    tags: [three-js, voxel, engine, webgl]
+
+  CorporateEnterpriseInc:
+    category: random
+    status: maintenance
+    tags: [game-updates, itch-io]
+    homepage: https://thecascadian.itch.io
+    notes: Update feed (updates.json) for a game published on itch.io.
+
+  archlinux-on-ps4:
+    category: random
+    status: archived
+    tags: [ps4, linux, fork]
+    notes: Fork of 7coil's archlinux-on-ps4.
+
+  # ---------------------------------------------------------------------------
+  # EXCLUDED — infrastructure repos that are not projects themselves
+  # ---------------------------------------------------------------------------
+  TheCascadian:
+    exclude: true
+    notes: Profile README host repository.
+
+  TheCascadian.github.io:
+    exclude: true
+    notes: This catalog site itself.

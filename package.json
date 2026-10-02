@@ -1,0 +1,16 @@
+{
+  "name": "thecascadian-github-index",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "DON — GitHub Project Index: a static repository catalog for GitHub Pages.",
+  "scripts": {
+    "update-repositories": "node scripts/update-repositories.mjs && node scripts/build.mjs",
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/update-repositories.mjs && node scripts/build.mjs && node scripts/serve.mjs",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
