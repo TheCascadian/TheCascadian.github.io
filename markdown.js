@@ -63,14 +63,20 @@
     });
     text = text.replace(/&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);)/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+    // Text is already entity-escaped at this point, so attribute values only need their quotes neutralised.
+    // Escaping again would turn the "&" in a query string into "&amp;amp;" and break the URL.
+    function attribute(value) {
+      return value.replace(/"/g, "&quot;");
+    }
+
     var destination = "\\(\\s*([^\\s()]*(?:\\([^\\s()]*\\)[^\\s()]*)*)(?:\\s+\"([^\"]*)\")?\\s*\\)";
     text = text.replace(new RegExp("!\\[([^\\]]*)\\]" + destination, "g"), function (match, alt, url, title) {
-      var titleAttribute = title ? ' title="' + escapeHtml(title) + '"' : "";
-      return park('<img src="' + escapeHtml(url) + '" alt="' + escapeHtml(alt) + '"' + titleAttribute + ">");
+      var titleAttribute = title ? ' title="' + attribute(title) + '"' : "";
+      return park('<img src="' + attribute(url) + '" alt="' + attribute(alt) + '"' + titleAttribute + ">");
     });
     text = text.replace(new RegExp("\\[((?:[^\\[\\]]|\\[[^\\]]*\\])*)\\]" + destination, "g"), function (match, label, url, title) {
-      var titleAttribute = title ? ' title="' + escapeHtml(title) + '"' : "";
-      return park('<a href="' + escapeHtml(url) + '"' + titleAttribute + ">") + label + park("</a>");
+      var titleAttribute = title ? ' title="' + attribute(title) + '"' : "";
+      return park('<a href="' + attribute(url) + '"' + titleAttribute + ">") + label + park("</a>");
     });
     text = text.replace(/\[([^\[\]]+)\](?:\[([^\[\]]*)\])?/g, function (match, label, id) {
       var reference = references[(id || label).toLowerCase()];
@@ -392,6 +398,12 @@
       }
       if (element.hasAttribute("src")) {
         var source = resolveUrl(element.getAttribute("src"), options.imageBase);
+        // A github.com "blob" address is an HTML page about the file. GitHub quietly swaps in the file itself when
+        // it renders a README; outside GitHub the same swap has to be done here.
+        var blob = source && source.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^?#]+)/);
+        if (blob) {
+          source = "https://raw.githubusercontent.com/" + blob[1] + "/" + blob[2] + "/" + blob[3];
+        }
         if (source) {
           element.setAttribute("src", source);
           element.setAttribute("loading", "lazy");
@@ -444,5 +456,26 @@
     return { fragment: template.content, headings: headings };
   }
 
-  global.Markdown = { render: render, toHtml: toHtml };
+  // Splits an optional leading "---" block of "key: value" lines from a document.
+  function frontMatter(markdown) {
+    var match = markdown.replace(/^\uFEFF/, "").match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
+    var meta = {};
+    // A document may legitimately open with a horizontal rule, so the block only counts as front matter when
+    // every line in it is a "key: value" pair.
+    var isFrontMatter = match && match[1].split(/\r?\n/).every(function (line) {
+      return !line.trim() || /^[A-Za-z][\w-]*:/.test(line);
+    });
+    if (!isFrontMatter) {
+      return { meta: meta, body: markdown };
+    }
+    match[1].split(/\r?\n/).forEach(function (line) {
+      var pair = line.match(/^([A-Za-z][\w-]*):\s*(.*?)\s*$/);
+      if (pair) {
+        meta[pair[1].toLowerCase()] = pair[2].replace(/^(["'])(.*)\1$/, "$2");
+      }
+    });
+    return { meta: meta, body: markdown.replace(/^\uFEFF/, "").slice(match[0].length) };
+  }
+
+  global.Markdown = { render: render, toHtml: toHtml, frontMatter: frontMatter };
 })(window);

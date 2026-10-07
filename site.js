@@ -582,7 +582,7 @@
         }
         return response.text().then(function (text) {
           var plain = !/\.md$/i.test(candidates[index]);
-          return { markdown: plain ? "```\n" + text + "\n```" : text };
+          return { markdown: plain ? "```\n" + text + "\n```" : window.Markdown.frontMatter(text).body };
         });
       });
     }
@@ -781,9 +781,37 @@
     });
   }
 
+  function compactName(name) {
+    var compact = name.replace(/\.md$/i, "").replace(/^\d+[-_. ]+/, "").replace(/[^a-z0-9]/gi, "").toLowerCase();
+    return compact;
+  }
+
+  // A document copied from a repository README keeps that README's relative image paths. Those files live in the
+  // source repository, not in this site, so the document needs to know which repository it came from.
+  // "repo: Name" in the document's front matter states it outright. Without that, the file name is matched
+  // against the public repository list (UNIVERSAL_ARMOR_CORE.md -> Universal-Armor), longest match first.
+  function sourceRepoFor(path, meta) {
+    return loadRepos().then(function (result) {
+      var fileName = compactName(path.split("/").pop());
+      var best = null;
+      result.repos.forEach(function (repo) {
+        var candidate = compactName(repo.name);
+        var matches = meta.repo ? repo.name.toLowerCase() === meta.repo.toLowerCase() : fileName.indexOf(candidate) === 0;
+        if (matches && (!best || candidate.length > compactName(best.name).length)) {
+          best = repo;
+        }
+      });
+      if (!best && meta.repo) {
+        best = { name: meta.repo, branch: meta.branch || "HEAD" };
+      }
+      return best;
+    });
+  }
+
   function openDocument(path) {
     var encoded = path.split("/").map(encodeURIComponent).join("/");
     var url = new URL(encoded, docsBaseUrl());
+    var folderUrl = new URL(".", url).href;
     var parts = path.split("/");
     openViewer({
       id: "doc:" + path, route: "doc/" + path, title: prettyName(parts[parts.length - 1]),
@@ -794,7 +822,25 @@
           if (!response.ok) {
             throw new Error("The document could not be found.");
           }
-          return response.text().then(function (text) { return { markdown: text }; });
+          return response.text();
+        }).then(function (text) {
+          var parsed = window.Markdown.frontMatter(text);
+          return sourceRepoFor(path, parsed.meta).then(function (repo) {
+            var result = { markdown: parsed.body, title: parsed.meta.title };
+            if (!repo) {
+              return result;
+            }
+            var rawBase = RAW + "/" + SITE.owner + "/" + repo.name + "/" + (parsed.meta.branch || repo.branch || "HEAD") + "/";
+            if (parsed.meta.repo) {
+              result.imageBase = rawBase;
+              return result;
+            }
+            // A guessed repository is only a fallback: an image that exists in this site always wins.
+            result.imageFallback = function (source) {
+              return source.indexOf(folderUrl) === 0 ? rawBase + source.slice(folderUrl.length) : null;
+            };
+            return result;
+          });
         });
       }
     });
@@ -802,7 +848,8 @@
 
   // ---------------------------------------------------------------- document viewer
 
-  // spec: { id, route, title, source, sourceLabel, imageBase, linkBase, load() -> Promise<{ markdown }> }
+  // spec: { id, route, title, source, sourceLabel, imageBase, linkBase, load() }
+  // load() resolves to { markdown, title?, imageBase?, imageFallback?(source) -> url or null }
   function openViewer(spec) {
     if (windows.get(spec.id)) {
       focusWindow(windows.get(spec.id));
@@ -851,7 +898,20 @@
     });
 
     spec.load().then(function (result) {
-      var rendered = window.Markdown.render(result.markdown, { imageBase: spec.imageBase, linkBase: spec.linkBase });
+      var rendered = window.Markdown.render(result.markdown, { imageBase: result.imageBase || spec.imageBase, linkBase: spec.linkBase });
+      if (result.title) {
+        entry.setTitle(result.title);
+      }
+      if (result.imageFallback) {
+        rendered.fragment.querySelectorAll("img[src]").forEach(function (image) {
+          image.addEventListener("error", function () {
+            var alternative = result.imageFallback(image.src);
+            if (alternative) {
+              image.src = alternative;
+            }
+          }, { once: true });
+        });
+      }
       doc.textContent = "";
       doc.append(rendered.fragment);
       var entries = rendered.headings.filter(function (heading) { return heading.level <= 3; });
