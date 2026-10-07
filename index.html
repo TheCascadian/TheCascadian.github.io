@@ -1,156 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TheCascadian: Repositories</title>
-<meta name="description" content="Public repositories by TheCascadian.">
-<style>
-:root{--paper:#f6f2e9;--ink:#23221f;--muted:#6a665c;--rule:#d8d2c3;--accent:#2f5d50;--hover:#ebe5d5}
-@media(prefers-color-scheme:dark){:root{--paper:#1b1c1a;--ink:#e6e2d6;--muted:#9b968a;--rule:#34352f;--accent:#8fbfae;--hover:#262722}}
-*{box-sizing:border-box}
-html{font-size:18px}
-body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.6 Georgia,"Iowan Old Style","Times New Roman",serif}
-main{max-width:40rem;margin:0 auto;padding:3rem 1.25rem 4rem}
-a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
-a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.mono,.name,.lang,.count,button{font-family:ui-monospace,Menlo,Consolas,monospace}
-
-header{display:flex;align-items:baseline;gap:1.25rem;flex-wrap:wrap;margin-bottom:1.25rem}
-h1{font-size:1.6rem;font-weight:normal;margin:0 auto 0 0}
-button{font-size:.8rem;background:none;border:1px solid var(--rule);color:var(--ink);padding:.3rem .7rem;border-radius:2px;cursor:pointer;transition:background .15s,border-color .15s,transform .1s}
-button:hover{background:var(--hover);border-color:var(--accent)}
-button:active{transform:translateY(1px)}
-button[aria-expanded=true]{border-color:var(--accent);color:var(--accent)}
-
-#elsewhere{margin-bottom:1.25rem}
-#elsewhere .inner{visibility:hidden;transition:visibility .25s}
-#elsewhere.is-open .inner{visibility:visible}
-#elsewhere .row{border-top:1px solid var(--rule);margin-bottom:.5rem}
-.lrow{display:grid;grid-template-columns:2.6rem 1fr auto;gap:1rem;align-items:center;padding:.8rem .25rem;border-bottom:1px solid var(--rule);color:inherit;text-decoration:none;transition:background .15s,padding-left .15s}
-.lrow:hover,.lrow:focus-visible{background:var(--hover);padding-left:.6rem}
-.badge{width:2.6rem;height:2.6rem;border:1px solid var(--rule);display:grid;place-items:center;color:var(--accent);transition:transform .2s,border-color .2s}
-.badge svg{width:1.2rem;height:1.2rem}
-.lrow:hover .badge{transform:rotate(-4deg);border-color:var(--accent)}
-.ltext{display:flex;flex-direction:column;line-height:1.35}
-.lname{font-size:1rem}
-.ldesc{font-size:.82rem;color:var(--muted)}
-.arr{color:var(--muted);transition:transform .2s,color .2s}
-.lrow:hover .arr{transform:translate(3px,-3px);color:var(--accent)}
-.lede{margin:0 0 1.5rem;color:var(--muted);font-size:.95rem;max-width:34rem}
-.about p{margin:0 .25rem .8rem;font-size:.95rem}
-
-/* Animated disclosure: grid row 0fr to 1fr avoids measuring heights in script */
-.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
-.panel>.inner{overflow:hidden;min-height:0}
-.is-open>.panel,#elsewhere.is-open .panel{grid-template-rows:1fr}
-#elsewhere .panel{grid-template-rows:0fr}
-
-summary{list-style:none;cursor:pointer}
-summary::-webkit-details-marker{display:none}
-
-.group{border-top:1px solid var(--rule);animation:rise .4s ease both;animation-delay:calc(var(--i)*55ms)}
-.group:last-of-type{border-bottom:1px solid var(--rule)}
-.group>summary,.repo>summary{display:flex;align-items:baseline;gap:.75rem;position:relative;transition:background .15s,padding-left .15s}
-.group>summary{padding:.9rem .25rem}
-.group>summary::before,.repo>summary::before{content:"+";color:var(--accent);width:1ch;font-family:ui-monospace,Menlo,Consolas,monospace;transition:transform .25s}
-.is-open>summary::before{transform:rotate(45deg)}
-summary:hover{background:var(--hover);padding-left:.6rem}
-.title{font-size:1.1rem}
-.count,.lang{margin-left:auto;color:var(--muted);font-size:.78rem}
-.group ul{list-style:none;margin:0 0 1rem 1.6rem;padding:0}
-.repo{border-top:1px dotted var(--rule)}
-.repo>summary{padding:.55rem .25rem}
-.name{font-size:.9rem;overflow-wrap:anywhere}
-.repo>summary:hover .name{color:var(--accent)}
-.repo .inner>*{margin-inline:.25rem}
-.repo p{margin:0 0 .4rem}
-.meta{color:var(--muted);font-size:.8rem}
-.links{display:flex;gap:1.25rem;flex-wrap:wrap;font-size:.9rem;padding-bottom:.9rem}
-.links a{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;text-decoration:none;transition:background-size .2s}
-.links a:hover,.links a:focus-visible{background-size:100% 1px}
-
-@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
-@media(max-width:30rem){html{font-size:17px}.group ul{margin-left:.25rem}.lang{display:none}}
-@media print{.panel{grid-template-rows:1fr!important}header button{display:none}}
-</style>
-</head>
-<body>
-<main>
-<header>
-<h1>Repositories</h1>
-<button type="button" id="links-btn" aria-expanded="false" aria-controls="elsewhere">Links</button>
-<button type="button" id="toggle-all">Open all</button>
-</header>
-<p class="lede">I make games, mod other people&rsquo;s games, and build tools when the existing ones get in my way. Most projects start with &ldquo;this should be better&rdquo; and end up considerably larger than planned.</p>
-<nav id="elsewhere" aria-label="Links"><div class="panel"><div class="inner"><div class="row"><a class="lrow" href="https://github.com/TheCascadian" rel="noreferrer"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><circle cx="6" cy="5.5" r="2.3"/><circle cx="6" cy="18.5" r="2.3"/><circle cx="18" cy="7.5" r="2.3"/><path d="M6 7.8v8.4"/><path d="M18 9.8c0 3.6-3.2 4.3-6.2 5-2.7.6-4.6 1.5-5.3 3.2"/></svg></span><span class="ltext"><span class="lname">GitHub</span><span class="ldesc">Code, tools, prototypes, and whatever I am actively working on</span></span><span class="arr" aria-hidden="true">&#8599;</span></a><a class="lrow" href="https://thecascadian.itch.io" rel="noreferrer"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><rect x="2.8" y="7.5" width="18.4" height="10.5"/><path d="M8.2 10.8v4M6.2 12.8h4"/><rect x="14.6" y="11" width="1.8" height="1.8" fill="currentColor" stroke="none"/><rect x="17.4" y="13.6" width="1.8" height="1.8" fill="currentColor" stroke="none"/></svg></span><span class="ltext"><span class="lname">itch.io</span><span class="ldesc">Games, prototypes, and playable releases</span></span><span class="arr" aria-hidden="true">&#8599;</span></a><a class="lrow" href="https://www.youtube.com/@SynphulHero" rel="noreferrer"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><rect x="2.8" y="6" width="18.4" height="12"/><path d="M10.2 9.4v5.2l4.8-2.6z" fill="currentColor" stroke="none"/></svg></span><span class="ltext"><span class="lname">YouTube</span><span class="ldesc">Development videos, showcases, and project updates</span></span><span class="arr" aria-hidden="true">&#8599;</span></a><a class="lrow" href="https://modrinth.com/user/CascadianBuilder" rel="noreferrer"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 2.8l8.2 4.6v9.2L12 21.2l-8.2-4.6V7.4z"/><path d="M3.8 7.4L12 12l8.2-4.6"/><path d="M12 12v9.2"/></svg></span><span class="ltext"><span class="lname">Modrinth</span><span class="ldesc">Minecraft mods and related projects</span></span><span class="arr" aria-hidden="true">&#8599;</span></a><a class="lrow" href="https://www.nexusmods.com/profile/SynphulHero/mods" rel="noreferrer"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 2.8l7.2 2.6v6.2c0 4.6-3 7.8-7.2 9.6-4.2-1.8-7.2-5-7.2-9.6V5.4z"/><path d="M9.3 15.4V8.6l5.4 6.8V8.6"/></svg></span><span class="ltext"><span class="lname">Nexus Mods</span><span class="ldesc">Mods that do not belong anywhere else</span></span><span class="arr" aria-hidden="true">&#8599;</span></a><a class="lrow" href="https://huggingface.co/TheCascadian" rel="noreferrer"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="8.7"/><rect x="8.1" y="8.6" width="1.8" height="2.8" fill="currentColor" stroke="none"/><rect x="14.1" y="8.6" width="1.8" height="2.8" fill="currentColor" stroke="none"/><path d="M8.3 14.6c1 1.3 2.3 2 3.7 2s2.7-.7 3.7-2"/></svg></span><span class="ltext"><span class="lname">Hugging Face</span><span class="ldesc">Models, local AI work, and experiments</span></span><span class="arr" aria-hidden="true">&#8599;</span></a></div></div></div></nav>
-<details class="group" open style="--i:0"><summary><span class="title">Minecraft mods</span><span class="count">6</span></summary><div class="panel"><div class="inner"><ul><li><details class="repo" id="Universal-Compression"><summary><span class="name">Universal-Compression</span><span class="lang">Java</span></summary><div class="panel"><div class="inner"><p>Universally compatible block compression mod for Minecraft NeoForge 1.21.1.</p><p class="meta">Java / Oct 2026</p><div class="links"><a href="https://github.com/TheCascadian/Universal-Compression">Repository</a><a href="https://modrinth.com/user/CascadianBuilder">Modrinth</a></div></div></div></details></li><li><details class="repo" id="Universal-Armor"><summary><span class="name">Universal-Armor</span><span class="lang">Java</span></summary><div class="panel"><div class="inner"><p>Universal Armor crafting for NeoForge 1.21.1.</p><p class="meta">Java / Jun 2026</p><div class="links"><a href="https://github.com/TheCascadian/Universal-Armor">Repository</a><a href="https://modrinth.com/user/CascadianBuilder">Modrinth</a></div></div></div></details></li><li><details class="repo" id="Universal-Armor-Extended"><summary><span class="name">Universal-Armor-Extended</span><span class="lang">Java</span></summary><div class="panel"><div class="inner"><p>No description published.</p><p class="meta">Java / Oct 2026</p><div class="links"><a href="https://github.com/TheCascadian/Universal-Armor-Extended">Repository</a></div></div></div></details></li><li><details class="repo" id="Universal-Ore-Processing"><summary><span class="name">Universal-Ore-Processing</span><span class="lang">Java</span></summary><div class="panel"><div class="inner"><p>Universally compatible ore processing mod for Minecraft NeoForge 1.21.1.</p><p class="meta">Java / Oct 2026</p><div class="links"><a href="https://github.com/TheCascadian/Universal-Ore-Processing">Repository</a></div></div></div></details></li><li><details class="repo" id="Universal-Pipes"><summary><span class="name">Universal-Pipes</span><span class="lang">Java</span></summary><div class="panel"><div class="inner"><p>Universal pipes mod for Minecraft NeoForge 1.21.1.</p><p class="meta">Java / Oct 2026</p><div class="links"><a href="https://github.com/TheCascadian/Universal-Pipes">Repository</a></div></div></div></details></li><li><details class="repo" id="creating_space"><summary><span class="name">creating_space</span><span class="lang">Fork</span></summary><div class="panel"><div class="inner"><p>Custom fork of Create: Creating Space, a Create addon for Minecraft Java, NeoForge 1.21.1.</p><p class="meta">Fork / May 2026</p><div class="links"><a href="https://github.com/TheCascadian/creating_space">Repository</a></div></div></div></details></li></ul></div></div></details>
-<details class="group" style="--i:1"><summary><span class="title">Hearts of Iron IV</span><span class="count">4</span></summary><div class="panel"><div class="inner"><ul><li><details class="repo" id="HOI4FocusGUI"><summary><span class="name">HOI4FocusGUI</span><span class="lang">Python</span></summary><div class="panel"><div class="inner"><p>Python-based Hearts of Iron IV mod GUI, primarily built for generating random focus trees.</p><p class="meta">Python / Jul 2026 / 8 stars</p><div class="links"><a href="https://github.com/TheCascadian/HOI4FocusGUI">Repository</a></div></div></div></details></li><li><details class="repo" id="HOI4UnitStacks"><summary><span class="name">HOI4UnitStacks</span><span class="lang">Python</span></summary><div class="panel"><div class="inner"><p>Experimental Hearts of Iron 4 unitstacks.txt generator tool.</p><p class="meta">Python / Apr 2026 / 1 star</p><div class="links"><a href="https://github.com/TheCascadian/HOI4UnitStacks">Repository</a></div></div></div></details></li><li><details class="repo" id="open-hoi4-gfx"><summary><span class="name">open-hoi4-gfx</span><span class="lang">Assets</span></summary><div class="panel"><div class="inner"><p>Curated compilation of freely available HOI4 icons aggregated from public sources across the modding community.</p><p class="meta">Assets / Jun 2026</p><div class="links"><a href="https://github.com/TheCascadian/open-hoi4-gfx">Repository</a></div></div></div></details></li><li><details class="repo" id="HOI4ModernUtils"><summary><span class="name">HOI4ModernUtils</span><span class="lang">TypeScript</span></summary><div class="panel"><div class="inner"><p>Fork of herbix's hoi4modutilities VS Code extension which adds more functions.</p><p class="meta">TypeScript / Aug 2026 / 2 stars</p><div class="links"><a href="https://github.com/TheCascadian/HOI4ModernUtils">Repository</a></div></div></div></details></li></ul></div></div></details>
-<details class="group" style="--i:2"><summary><span class="title">Games and engines</span><span class="count">2</span></summary><div class="panel"><div class="inner"><ul><li><details class="repo" id="EffectiveEngine"><summary><span class="name">EffectiveEngine</span><span class="lang">JavaScript</span></summary><div class="panel"><div class="inner"><p>A three.js voxel engine, work in progress.</p><p class="meta">JavaScript / Jul 2026</p><div class="links"><a href="https://github.com/TheCascadian/EffectiveEngine">Repository</a></div></div></div></details></li><li><details class="repo" id="CorporateEnterpriseInc"><summary><span class="name">CorporateEnterpriseInc</span><span class="lang">Updates</span></summary><div class="panel"><div class="inner"><p>Contains only the updates.json file for the game Corporate Enterprise Inc.</p><p class="meta">Updates / Jul 2026</p><div class="links"><a href="https://github.com/TheCascadian/CorporateEnterpriseInc">Repository</a><a href="https://thecascadian.itch.io/corporate-enterprise-inc">Play on itch.io</a></div></div></div></details></li></ul></div></div></details>
-<details class="group" style="--i:3"><summary><span class="title">Python</span><span class="count">1</span></summary><div class="panel"><div class="inner"><ul><li><details class="repo" id="Public-Python-Package"><summary><span class="name">Public-Python-Package</span><span class="lang">Python</span></summary><div class="panel"><div class="inner"><p>A public repository for a variety of my Python projects.</p><p class="meta">Python / Sep 2025</p><div class="links"><a href="https://github.com/TheCascadian/Public-Python-Package">Repository</a></div></div></div></details></li></ul></div></div></details>
-<details class="group" style="--i:4"><summary><span class="title">Site and profile</span><span class="count">2</span></summary><div class="panel"><div class="inner"><ul><li><details class="repo" id="TheCascadian.github.io"><summary><span class="name">TheCascadian.github.io</span><span class="lang">HTML</span></summary><div class="panel"><div class="inner"><p>Personal site, built and rebuilt again and again, with lots of coffee.</p><p class="meta">HTML / Oct 2026</p><div class="links"><a href="https://github.com/TheCascadian/TheCascadian.github.io">Repository</a><a href="https://thecascadian.github.io/">Live site</a></div></div></div></details></li><li><details class="repo" id="TheCascadian"><summary><span class="name">TheCascadian</span><span class="lang">Profile</span></summary><div class="panel"><div class="inner"><p>Personal repository, made primarily to host a profile README.</p><p class="meta">Profile / Jul 2026</p><div class="links"><a href="https://github.com/TheCascadian/TheCascadian">Repository</a></div></div></div></details></li></ul></div></div></details>
-<details class="group" style="--i:5"><summary><span class="title">Other forks</span><span class="count">1</span></summary><div class="panel"><div class="inner"><ul><li><details class="repo" id="archlinux-on-ps4"><summary><span class="name">archlinux-on-ps4</span><span class="lang">Fork</span></summary><div class="panel"><div class="inner"><p>PS4 Linux, forked from 7coil's archlinux-on-ps4.</p><p class="meta">Fork / Sep 2026</p><div class="links"><a href="https://github.com/TheCascadian/archlinux-on-ps4">Repository</a></div></div></div></details></li></ul></div></div></details>
-<details class="group" style="--i:6"><summary><span class="title">About</span><span class="count"></span></summary><div class="panel"><div class="inner"><div class="about"><p>I&rsquo;m a game developer and UI/UX designer who spends a lot of time building tools, modding games, and turning small ideas into much larger projects. I keep coming back to simulation, history, procedural systems, and interfaces.</p><p>Complex systems should still be readable. Interfaces should feel good to use. Tools should stay out of the way. Games should respect the player&rsquo;s time. And if something can be moddable, I would rather it be moddable.</p></div></div></div></details>
-</main>
+<title>TheCascadian</title>
+<meta name="description" content="TheCascadian: game development, modding tools, and public repositories.">
+<meta name="color-scheme" content="light dark">
+<link rel="preload" href="fonts/ms_sans_serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
 <script>
+// Applied before first paint so the stored theme never flashes the default one.
 (function () {
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // The native [open] attribute stays the source of truth for accessibility;
-  // .is-open drives the CSS transition and is applied one frame after opening.
-  function setOpen(d, want) {
-    if (want) {
-      d.open = true;
-      requestAnimationFrame(function () { d.classList.add('is-open'); });
-      return;
-    }
-    d.classList.remove('is-open');
-    if (reduce) { d.open = false; return; }
-    setTimeout(function () { if (!d.classList.contains('is-open')) d.open = false; }, 260);
+  var theme = null;
+  try { theme = localStorage.getItem("theme"); } catch (error) { theme = null; }
+  if (theme !== "day" && theme !== "night" && theme !== "classic") {
+    theme = matchMedia("(prefers-color-scheme: dark)").matches ? "night" : "day";
   }
-
-  document.querySelectorAll('details').forEach(function (d) {
-    if (d.open) d.classList.add('is-open');
-    d.querySelector('summary').addEventListener('click', function (e) {
-      e.preventDefault();
-      setOpen(d, !d.classList.contains('is-open'));
-      syncToggle();
-    });
-  });
-
-  var groups = [].slice.call(document.querySelectorAll('.group'));
-  var toggle = document.getElementById('toggle-all');
-  function syncToggle() {
-    var allOpen = groups.every(function (g) { return g.classList.contains('is-open'); });
-    toggle.textContent = allOpen ? 'Close all' : 'Open all';
-  }
-  toggle.addEventListener('click', function () {
-    var allOpen = groups.every(function (g) { return g.classList.contains('is-open'); });
-    document.querySelectorAll('details').forEach(function (d) { setOpen(d, !allOpen && d.classList.contains('group')); });
-    toggle.textContent = allOpen ? 'Open all' : 'Close all';
-  });
-  syncToggle();
-
-  var linksBtn = document.getElementById('links-btn');
-  var linksPanel = document.getElementById('elsewhere');
-  linksBtn.addEventListener('click', function () {
-    var show = linksBtn.getAttribute('aria-expanded') !== 'true';
-    linksBtn.setAttribute('aria-expanded', show);
-    linksPanel.classList.toggle('is-open', show);
-  });
-
-  // Deep link: /#Universal-Pipes opens its group and row.
-  function openFromHash() {
-    var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-    if (!el || !el.classList.contains('repo')) return;
-    setOpen(el.closest('.group'), true);
-    setOpen(el, true);
-    el.scrollIntoView();
-  }
-  openFromHash();
-  addEventListener('hashchange', openFromHash);
+  document.documentElement.dataset.theme = theme;
 })();
 </script>
+</head>
+<body>
+
+<main id="desktop" aria-label="Desktop">
+  <nav id="icons" aria-label="Programs"></nav>
+  <div id="windows"></div>
+  <noscript>
+    <section class="window static">
+      <header class="titlebar"><span class="ttext">TheCascadian</span></header>
+      <div class="wbody pad">
+        <p>Lead UI/UX Designer and Game Developer in the Pacific Northwest. This site needs JavaScript for its window interface.</p>
+        <p><a href="https://github.com/TheCascadian?tab=repositories">Repositories on GitHub</a></p>
+        <p><a href="https://thecascadian.itch.io">itch.io</a> | <a href="https://modrinth.com/user/CascadianBuilder">Modrinth</a> | <a href="https://www.youtube.com/@SynphulHero">YouTube</a></p>
+      </div>
+    </section>
+  </noscript>
+</main>
+
+<div id="startmenu" class="menu" role="menu" aria-label="Start menu" hidden></div>
+
+<footer id="taskbar">
+  <button id="start" class="btn" type="button" aria-haspopup="menu" aria-expanded="false"><span class="ico"></span><b>Start</b></button>
+  <div id="tasks" role="tablist" aria-label="Open windows"></div>
+  <div id="tray">
+    <button id="themebtn" class="traybtn" type="button" title="Change theme"></button>
+    <time id="clock"></time>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="markdown.js"></script>
+<script src="site.js"></script>
 </body>
 </html>
