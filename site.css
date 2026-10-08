@@ -177,6 +177,21 @@ table.list tbody tr:focus-visible { outline: 1px dotted var(--text); outline-off
 :root[data-theme="classic"] .doc h2, :root[data-theme="classic"] .doc h3 { font-size: 11px; }
 :root[data-theme="classic"] .doc code { font-size: 12px; }
 
+/* Folding panels and meters inside documents */
+.doc details { padding: 0 10px; border: 1px solid var(--sh); box-shadow: 1px 1px var(--hi), inset 1px 1px var(--hi); }
+.doc details[open] { padding-bottom: 2px; }
+.doc details details { margin-top: .5em; }
+.doc summary { display: flex; align-items: center; gap: 7px; padding: 5px 0; list-style: none; font-weight: 400; }
+.doc summary::-webkit-details-marker { display: none; }
+.doc summary::before { content: "+"; flex: none; width: 9px; height: 9px; border: 1px solid var(--sh); background: var(--field); color: var(--text); font: 9px/8px monospace; text-align: center; }
+.doc details[open] > summary::before { content: "-"; }
+.doc details[open] > summary { margin-bottom: 6px; border-bottom: 1px solid var(--sh); box-shadow: 0 1px var(--hi); }
+.doc summary:focus-visible { outline: 1px dotted var(--text); }
+.doc progress { appearance: none; -webkit-appearance: none; width: 104px; height: 13px; margin-right: 4px; vertical-align: -2px; border: 0; background: var(--face); box-shadow: inset 1px 1px var(--sh), inset -1px -1px var(--hi); }
+.doc progress::-webkit-progress-bar { background: transparent; padding: 2px; }
+.doc progress::-webkit-progress-value { background: repeating-linear-gradient(90deg, var(--sel) 0 6px, transparent 6px 8px); }
+.doc progress::-moz-progress-bar { background: repeating-linear-gradient(90deg, var(--sel) 0 6px, transparent 6px 8px); }
+
 /* Taskbar and Start menu */
 #taskbar { position: absolute; left: 0; right: 0; bottom: 0; height: var(--taskbar); display: flex; align-items: center; gap: 4px; padding: 4px 2px 2px; background: var(--face); box-shadow: inset 0 1px var(--lt), inset 0 2px var(--hi); z-index: 100000; }
 #taskbar .btn { height: 22px; }
@@ -201,7 +216,25 @@ table.list tbody tr:focus-visible { outline: 1px dotted var(--text); outline-off
 :root:not([data-theme="classic"]) table.list tbody tr.sel:hover td { background: var(--sel); }
 :root:not([data-theme="classic"]) .btn:focus-visible { outline: 2px solid var(--title-b); outline-offset: -2px; }
 :root:not([data-theme="classic"]) .doc { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { :root .doc { scroll-behavior: auto; } }
+:root:not([data-theme="classic"]) .doc tbody tr:hover td { background: var(--code); }
+:root:not([data-theme="classic"]) .doc summary:hover { color: var(--link); }
+/* A panel's contents ease in when it opens, and its meters fill in chunks, the way a Windows 98 progress bar does. */
+:root:not([data-theme="classic"]) .doc details[open] > :not(summary) { animation: doc-reveal .2s ease-out both; }
+:root:not([data-theme="classic"]) .doc progress:not(.shown) { clip-path: inset(0 100% 0 0); }
+:root:not([data-theme="classic"]) .doc progress.shown { animation: doc-fill .55s steps(11, end) both; }
+:root:not([data-theme="classic"]) .doc tr:nth-child(2) progress { animation-delay: .05s; }
+:root:not([data-theme="classic"]) .doc tr:nth-child(3) progress { animation-delay: .1s; }
+:root:not([data-theme="classic"]) .doc tr:nth-child(4) progress { animation-delay: .15s; }
+:root:not([data-theme="classic"]) .doc tr:nth-child(5) progress { animation-delay: .2s; }
+:root:not([data-theme="classic"]) .doc tr:nth-child(6) progress { animation-delay: .25s; }
+:root:not([data-theme="classic"]) .doc tr:nth-child(n+7) progress { animation-delay: .3s; }
+@keyframes doc-reveal { from { opacity: 0; transform: translateY(-4px); } }
+@keyframes doc-fill { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) {
+  :root .doc { scroll-behavior: auto; }
+  :root .doc details[open] > :not(summary), :root .doc progress.shown { animation: none; }
+  :root .doc progress:not(.shown) { clip-path: none; }
+}
 
 /* Narrow screens: windows stop floating and stack as a single scrolling column. */
 @media (max-width: 760px) {

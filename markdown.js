@@ -16,12 +16,12 @@
   var REFERENCE = /^ {0,3}\[([^\]]+)\]:\s*<?(\S+?)>?(?:\s+["'(](.*)["')])?\s*$/;
 
   var ALLOWED_TAGS = new Set(("a abbr b blockquote br center cite code dd del details div dl dt em figcaption figure h1 h2 h3 h4 h5 h6 "
-    + "hr i img input ins kbd li mark ol p picture pre q s samp small source span strike strong sub summary sup table tbody "
+    + "hr i img input ins kbd li mark ol p picture pre progress q s samp small source span strike strong sub summary sup table tbody "
     + "td tfoot th thead tr tt u ul var").split(" "));
   var DROPPED_TAGS = new Set(("script style iframe object embed svg math template noscript form textarea select button video "
     + "audio canvas link meta base title head").split(" "));
   var ALLOWED_ATTRIBUTES = new Set(("href src srcset alt title width height align valign colspan rowspan open start type checked "
-    + "disabled media").split(" "));
+    + "disabled media value max").split(" "));
   var SAFE_PROTOCOLS = new Set(["http:", "https:", "mailto:"]);
 
   function escapeHtml(text) {

@@ -914,6 +914,30 @@
       }
       doc.textContent = "";
       doc.append(rendered.fragment);
+      // Meters fill when they first scroll into view, or when the panel holding them is opened. The stylesheet
+      // keeps them fully visible if this never runs (Classic theme, reduced motion, or no observer support).
+      // The meter's parent is observed, not the meter: a meter waiting to fill is clipped to nothing, and a fully
+      // clipped element never counts as intersecting.
+      var meters = Array.prototype.slice.call(doc.querySelectorAll("progress"));
+      if (window.IntersectionObserver) {
+        var meterWatcher = new IntersectionObserver(function (seen) {
+          seen.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.querySelectorAll(":scope > progress").forEach(function (meter) {
+                meter.classList.add("shown");
+              });
+              meterWatcher.unobserve(entry.target);
+            }
+          });
+        }, { root: doc, threshold: 0.2 });
+        meters.forEach(function (meter) {
+          meterWatcher.observe(meter.parentElement);
+        });
+      } else {
+        meters.forEach(function (meter) {
+          meter.classList.add("shown");
+        });
+      }
       var entries = rendered.headings.filter(function (heading) { return heading.level <= 3; });
       outline.textContent = "";
       entries.forEach(function (heading) {
